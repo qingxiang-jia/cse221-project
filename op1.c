@@ -15,3 +15,8 @@ int main()
   }
   return 0;
 }
+
+// Report the overhead of reading time
+void readTimeOverhead() {
+  
+}
