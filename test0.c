@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "monotonic_timer.c"
+#include "nano.h"
 
 int main(int argc, char* argv[])
 {
   int i;
-  double a;
-  double b;
+  uint64_t a;
+  uint64_t b;
   for (i = 0; i < 10; i++) {
-    a = monotonic_seconds();
+    a = getNano();
     sleep(1);
-    b = monotonic_seconds();
+    b = getNano();
     printf("%llu\n", b-a);
   }
   return 0;
