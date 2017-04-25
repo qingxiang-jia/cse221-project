@@ -6,5 +6,11 @@ test0:	test0.o
 test0.o:	test0.c
 	clang -O0 -c test0.c count.h
 
+op1: op1.o
+	clang -O0 -o op1 op1.o
+
+op1.o: op1.c
+	clang -O0 -c op1.c count.h
+
 clean:
-	rm -f *.o *.out test0 *.s *.gch
+	rm -f *.o *.out test0 *.s *.gch op1
