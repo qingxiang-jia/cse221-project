@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include <sys/time.h>
 #include <errno.h>
 #include "count.h"
@@ -16,6 +17,8 @@
 #define SYS_CALL_ROUNDS_OUTER 1000
 #define SYS_CALL_ROUNDS_INNER 1000
 #define PROCESS_CREATION_ROUNDS 10000
+#define THREAD_CREATION_ROUNDS_OUTER 10
+#define THREAD_CREATION_ROUNDS_INNER 10
 
 /* Measure Overhead BEGIN */
 
@@ -411,33 +414,75 @@ void measureProcessCreationTime()
   printf("The average overhead for process creation is: %f\n", avgOverhead);
 }
 
+void *fRunByThread(void *void_ptr) {
+  return NULL;
+}
+
 void measureThreadCreationTime()
 {
+  unsigned i, j;
+  double avgOverhead;
+  for (i = 0; i < THREAD_CREATION_ROUNDS_OUTER; i++) {
+    for (j = 0; j < THREAD_CREATION_ROUNDS_INNER; j++) {
+      unsigned lo, hi, lo1, hi1;
+      double start, end;
+      int dummy = 0;
+      pthread_t t1;
+      pthread_t t2;
+      pthread_t t3;
+      pthread_t t4;
+      pthread_t t5;
+      pthread_t t6;
+      pthread_t t7;
+      pthread_t t8;
+      pthread_t t9;
+      pthread_t t10;
+      COUNT1(hi, lo)
+      pthread_create(&t1, NULL, fRunByThread, &dummy);
+      pthread_create(&t2, NULL, fRunByThread, &dummy);
+      pthread_create(&t3, NULL, fRunByThread, &dummy);
+      pthread_create(&t4, NULL, fRunByThread, &dummy);
+      pthread_create(&t5, NULL, fRunByThread, &dummy);
+      pthread_create(&t6, NULL, fRunByThread, &dummy);
+      pthread_create(&t7, NULL, fRunByThread, &dummy);
+      pthread_create(&t8, NULL, fRunByThread, &dummy);
+      pthread_create(&t9, NULL, fRunByThread, &dummy);
+      pthread_create(&t10, NULL, fRunByThread, &dummy);
+      COUNT2(hi1, lo1)
+      GETNUM(hi, lo, start)
+      GETNUM(hi1, lo1, end)
+      avgOverhead += (end - start - READ_TIME_OVERHEAD);
+    }
+  }
+  avgOverhead -= LOOP_OVERHEAD * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER; 
+  avgOverhead /= (10 * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER);
+  printf("The average overhead for thread creation is: %f\n", avgOverhead);
 }
 
 /* Task Creation Time END */
 
 int main()
 {
-  /* measurement overhead */
-  measureReadTimeOverhead();
-  measureLoopOverhead();
+  // /* measurement overhead */
+  // measureReadTimeOverhead();
+  // measureLoopOverhead();
 
-  /* procedure call overhead */
-  measure0arg();
-  measure1arg();
-  measure2arg();
-  measure3arg();
-  measure4arg();
-  measure5arg();
-  measure6arg();
-  measure7arg();
+  // /* procedure call overhead */
+  // measure0arg();
+  // measure1arg();
+  // measure2arg();
+  // measure3arg();
+  // measure4arg();
+  // measure5arg();
+  // measure6arg();
+  // measure7arg();
 
-  /* system call overhead */
-  measureSystemCallOverhead();
+  // /* system call overhead */
+  // measureSystemCallOverhead();
 
-  /* measure process/thread creation time */
-  measureProcessCreationTime();
+  // /* measure process/thread creation time */
+  // measureProcessCreationTime();
+  measureThreadCreationTime();
 
   return 0;
 }
