@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/time.h>
 #include <errno.h>
 #include "count.h"
@@ -14,6 +15,7 @@
 #define PROCEDURE_CALL_ROUNDS_INNER 1000
 #define SYS_CALL_ROUNDS_OUTER 1000
 #define SYS_CALL_ROUNDS_INNER 1000
+#define PROCESS_CREATION_ROUNDS 10000
 
 /* Measure Overhead BEGIN */
 
@@ -359,7 +361,8 @@ void measureSystemCallOverhead()
     unsigned lo, hi, lo1, hi1;
     double start, end;
     COUNT1(hi, lo)
-    for (j = 0; j < SYS_CALL_ROUNDS_INNER; j++) {
+    for (j = 0; j < SYS_CALL_ROUNDS_INNER; j++)
+    {
       gettimeofday(&now, NULL);
       gettimeofday(&now, NULL);
       gettimeofday(&now, NULL);
@@ -386,6 +389,26 @@ void measureSystemCallOverhead()
 
 void measureProcessCreationTime()
 {
+  unsigned i;
+  double avgOverhead;
+  for (i = 0; i < PROCESS_CREATION_ROUNDS; i++)
+  {
+    unsigned lo, hi, lo1, hi1;
+    double start, end;
+    COUNT1(hi, lo)
+    pid_t pid = fork();
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    if (pid == 0)
+    {
+      exit(0);
+    }
+    avgOverhead += (end - start);
+  }
+  avgOverhead -= READ_TIME_OVERHEAD * PROCESS_CREATION_ROUNDS;
+  avgOverhead /= PROCESS_CREATION_ROUNDS;
+  printf("The average overhead for process creation is: %f\n", avgOverhead);
 }
 
 void measureThreadCreationTime()
@@ -400,7 +423,7 @@ int main()
   measureReadTimeOverhead();
   measureLoopOverhead();
 
-  // /* procedure call overhead */
+  /* procedure call overhead */
   measure0arg();
   measure1arg();
   measure2arg();
@@ -412,6 +435,9 @@ int main()
 
   /* system call overhead */
   measureSystemCallOverhead();
+
+  /* measure process/thread creation time */
+  measureProcessCreationTime();
 
   return 0;
 }
