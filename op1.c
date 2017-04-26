@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <sys/time.h>
+#include <errno.h>
 #include "count.h"
 
 #define READ_TIME_ROUNDS 10000
 #define LOOP_ROUNDS 10000
 #define READ_TIME_OVERHEAD 32
+#define SYS_CALL_ROUNDS 10000
 
 /* Measure Overhead BEGIN */
 
@@ -226,22 +229,47 @@ void measure8args() {
 
 /* Procedure Call Overhead END */
 
+/* System Call Overhead BEGIN */
+
+void measureSystemCallOverhead() {
+  uint64_t i, avgOverhead;
+  for (i = 0; i < SYS_CALL_ROUNDS; i++) {
+    unsigned lo, hi, lo1, hi1, start, end;
+    struct timeval now;
+    COUNT1(hi, lo)
+    gettimeofday(&now, NULL);
+    // getpid();
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    avgOverhead += (end - start);
+    // printf("%u\n", (end - start));
+  }
+  avgOverhead /= SYS_CALL_ROUNDS;
+  printf("The average overhead for system call is: %llu\n", avgOverhead);  
+}
+
+/* System Call Overhead END */
+
 int main()
 {
-  // measurement overhead
-  measureReadTimeOverhead();
-  measureLoopOverhead();
+  // /* measurement overhead */
+  // measureReadTimeOverhead();
+  // measureLoopOverhead();
 
-  // procedure call overhead
-  measure0arg();
-  measure1arg();
-  measure2args();
-  measure3args();
-  measure4args();
-  measure5args();
-  measure6args();
-  measure7args();
-  measure8args();
+  // /* procedure call overhead */
+  // measure0arg();
+  // measure1arg();
+  // measure2args();
+  // measure3args();
+  // measure4args();
+  // measure5args();
+  // measure6args();
+  // measure7args();
+  // measure8args();
+
+  /* system call overhead */
+  // measureSystemCallOverhead();
 
   return 0;
 }
