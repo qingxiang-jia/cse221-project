@@ -6,47 +6,50 @@
 #include "count.h"
 
 #define READ_TIME_ROUNDS 10000
-#define LOOP_ROUNDS 10000
-#define READ_TIME_OVERHEAD 32
+#define LOOP_ROUNDS_OUTER 100
+#define LOOP_ROUNDS_INNER 10000
+#define READ_TIME_OVERHEAD 31
 #define SYS_CALL_ROUNDS 10000
 
 /* Measure Overhead BEGIN */
 
 void measureReadTimeOverhead()
 {
-  uint64_t avgOverhead, i;
+  unsigned i;
+  double avgOverhead;
   for (i = 0; i < READ_TIME_ROUNDS; i++)
   {
-    uint64_t start, end, j;
+    double start, end;
     unsigned lo, hi, lo1, hi1;
     COUNT1(hi, lo)
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
+    printf("%f\n", (end - start));
     avgOverhead += (end - start);
   }
   avgOverhead /= READ_TIME_ROUNDS;
-  printf("Average overhead for reading time is: %llu\n", avgOverhead);
+  printf("Average overhead for reading time is: %f\n", avgOverhead);
 }
 
 void measureLoopOverhead()
 {
   uint64_t i, avgOverhead;
-  for (i = 0; i < LOOP_ROUNDS; i++)
+  for (i = 0; i < LOOP_ROUNDS_OUTER; i++)
   {
     uint64_t start, end, j;
     unsigned lo, hi, lo1, hi1;
     COUNT1(hi, lo)
-    for (j = 0; j < 100; j++)
+    for (j = 0; j < LOOP_ROUNDS_INNER; j++)
     {
     }
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
+    avgOverhead -= READ_TIME_OVERHEAD;
   }
-  avgOverhead -= READ_TIME_OVERHEAD;
-  avgOverhead /= (LOOP_ROUNDS * 100);
+  // avgOverhead /= (LOOP_ROUNDS * 100);
   printf("Average overhead for loop is: %llu\n", avgOverhead);
 }
 
@@ -56,45 +59,47 @@ void measureLoopOverhead()
 
 #define PROCEDURE_CALL_ROUNDS 10000
 
-void p0()
+void __attribute__((noinline)) p0()
 {
 }
 
-void p1(int a1)
+void __attribute__((noinline)) p1(int a1)
 {
 }
 
-void p2(int a1, int a2)
+void __attribute__((noinline)) p2(int a1, int a2)
 {
 }
 
-void p3(int a1, int a2, int a3)
+void __attribute__((noinline)) p3(int a1, int a2, int a3)
 {
 }
 
-void p4(int a1, int a2, int a3, int a4)
+void __attribute__((noinline)) p4(int a1, int a2, int a3, int a4)
 {
 }
 
-void p5(int a1, int a2, int a3, int a4, int a5)
+void __attribute__((noinline)) p5(int a1, int a2, int a3, int a4, int a5)
 {
 }
 
-void p6(int a1, int a2, int a3, int a4, int a5, int a6)
+void __attribute__((noinline)) p6(int a1, int a2, int a3, int a4, int a5, int a6)
 {
 }
 
-void p7(int a1, int a2, int a3, int a4, int a5, int a6, float a7)
+void __attribute__((noinline)) p7(int a1, int a2, int a3, int a4, int a5, int a6, float a7)
 {
 }
 
-void p8(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8)
+void __attribute__((noinline)) p8(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8)
 {
 }
 
-void measure0arg() {
+void measure0arg()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p0();
@@ -103,13 +108,16 @@ void measure0arg() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= (PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD);
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 0 argument is: %llu\n", avgOverhead);
 }
 
-void measure1arg() {
+void measure1arg()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p1(1);
@@ -118,13 +126,16 @@ void measure1arg() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 1 argument is: %llu\n", avgOverhead);
 }
 
-void measure2args() {
+void measure2args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p2(1, 2);
@@ -133,13 +144,16 @@ void measure2args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 2 arguments is: %llu\n", avgOverhead);
 }
 
-void measure3args() {
+void measure3args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p3(1, 2, 3);
@@ -148,13 +162,16 @@ void measure3args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 3 arguments is: %llu\n", avgOverhead);
 }
 
-void measure4args() {
+void measure4args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p4(1, 2, 3, 4);
@@ -163,13 +180,16 @@ void measure4args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 4 arguments is: %llu\n", avgOverhead);
 }
 
-void measure5args() {
+void measure5args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p5(1, 2, 3, 4, 5);
@@ -178,13 +198,16 @@ void measure5args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 5 arguments is: %llu\n", avgOverhead);
 }
 
-void measure6args() {
+void measure6args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p6(1, 2, 3, 4, 5, 6);
@@ -193,13 +216,16 @@ void measure6args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 6 arguments is: %llu\n", avgOverhead);
 }
 
-void measure7args() {
+void measure7args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p7(1, 2, 3, 4, 5, 6, 7.0);
@@ -208,13 +234,16 @@ void measure7args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 7 arguments is: %llu\n", avgOverhead);
 }
 
-void measure8args() {
+void measure8args()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++) {
+  for (i = 0; i < PROCEDURE_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     COUNT1(hi, lo)
     p8(1, 2, 3, 4, 5, 6, 7, 8);
@@ -223,6 +252,7 @@ void measure8args() {
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
   }
+  avgOverhead -= PROCEDURE_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= PROCEDURE_CALL_ROUNDS;
   printf("The average overhead for procedure call with 8 arguments is: %llu\n", avgOverhead);
 }
@@ -231,9 +261,11 @@ void measure8args() {
 
 /* System Call Overhead BEGIN */
 
-void measureSystemCallOverhead() {
+void measureSystemCallOverhead()
+{
   uint64_t i, avgOverhead;
-  for (i = 0; i < SYS_CALL_ROUNDS; i++) {
+  for (i = 0; i < SYS_CALL_ROUNDS; i++)
+  {
     unsigned lo, hi, lo1, hi1, start, end;
     struct timeval now;
     COUNT1(hi, lo)
@@ -245,16 +277,29 @@ void measureSystemCallOverhead() {
     avgOverhead += (end - start);
     // printf("%u\n", (end - start));
   }
+  avgOverhead -= SYS_CALL_ROUNDS * READ_TIME_OVERHEAD;
   avgOverhead /= SYS_CALL_ROUNDS;
-  printf("The average overhead for system call is: %llu\n", avgOverhead);  
+  printf("The average overhead for system call is: %llu\n", avgOverhead);
 }
 
 /* System Call Overhead END */
 
+/* Task Creation Time BEGIN */
+
+void measureProcessCreationTime()
+{
+}
+
+void measureThreadCreationTime()
+{
+}
+
+/* Task Creation Time END */
+
 int main()
 {
-  // /* measurement overhead */
-  // measureReadTimeOverhead();
+  /* measurement overhead */
+  measureReadTimeOverhead();
   // measureLoopOverhead();
 
   // /* procedure call overhead */

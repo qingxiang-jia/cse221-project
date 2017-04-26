@@ -21,7 +21,7 @@
 }
 
 #define GETNUM(hi, lo, num) {\
-  num = ((uint64_t)hi << 32 | lo);\
+  num = (double) ((uint64_t)hi << 32 | lo);\
 }
 
 #endif

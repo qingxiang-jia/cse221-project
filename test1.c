@@ -1,5 +1,11 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <unistd.h>
+
 int main() {
-  int a = 2;
-  int b = 1 + a;
-  return b;
+  uint64_t a = 221;
+  double b = 0;
+  b = (double) a;
+  printf("%f\n", b);
+  return 0;
 }
