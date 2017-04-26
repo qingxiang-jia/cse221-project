@@ -12,7 +12,8 @@
 #define LOOP_OVERHEAD 6
 #define PROCEDURE_CALL_ROUNDS_OUTER 1000
 #define PROCEDURE_CALL_ROUNDS_INNER 1000
-#define SYS_CALL_ROUNDS 10000
+#define SYS_CALL_ROUNDS_OUTER 1000
+#define SYS_CALL_ROUNDS_INNER 1000
 
 /* Measure Overhead BEGIN */
 
@@ -350,23 +351,33 @@ void measure7arg()
 
 void measureSystemCallOverhead()
 {
-  uint64_t i, avgOverhead;
-  for (i = 0; i < SYS_CALL_ROUNDS; i++)
+  unsigned i, j;
+  double avgOverhead;
+  struct timeval now;
+  for (i = 0; i < SYS_CALL_ROUNDS_OUTER; i++)
   {
-    unsigned lo, hi, lo1, hi1, start, end;
-    struct timeval now;
+    unsigned lo, hi, lo1, hi1;
+    double start, end;
     COUNT1(hi, lo)
-    gettimeofday(&now, NULL);
-    // getpid();
+    for (j = 0; j < SYS_CALL_ROUNDS_INNER; j++) {
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+      gettimeofday(&now, NULL);
+    }
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
-    avgOverhead += (end - start);
-    // printf("%u\n", (end - start));
+    avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * SYS_CALL_ROUNDS_INNER);
   }
-  avgOverhead -= SYS_CALL_ROUNDS * READ_TIME_OVERHEAD;
-  avgOverhead /= SYS_CALL_ROUNDS;
-  printf("The average overhead for system call is: %llu\n", avgOverhead);
+  avgOverhead /= (10 * SYS_CALL_ROUNDS_OUTER * SYS_CALL_ROUNDS_INNER);
+  printf("The average overhead for system call is: %f\n", avgOverhead);
 }
 
 /* System Call Overhead END */
@@ -400,7 +411,7 @@ int main()
   measure7arg();
 
   /* system call overhead */
-  // measureSystemCallOverhead();
+  measureSystemCallOverhead();
 
   return 0;
 }
