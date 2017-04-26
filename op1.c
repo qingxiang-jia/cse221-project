@@ -25,7 +25,6 @@ void measureReadTimeOverhead()
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
-    printf("%f\n", (end - start));
     avgOverhead += (end - start);
   }
   avgOverhead /= READ_TIME_ROUNDS;
@@ -34,10 +33,11 @@ void measureReadTimeOverhead()
 
 void measureLoopOverhead()
 {
-  uint64_t i, avgOverhead;
+  unsigned i, j;
+  double avgOverhead;
   for (i = 0; i < LOOP_ROUNDS_OUTER; i++)
   {
-    uint64_t start, end, j;
+    double start, end;
     unsigned lo, hi, lo1, hi1;
     COUNT1(hi, lo)
     for (j = 0; j < LOOP_ROUNDS_INNER; j++)
@@ -49,8 +49,8 @@ void measureLoopOverhead()
     avgOverhead += (end - start);
     avgOverhead -= READ_TIME_OVERHEAD;
   }
-  // avgOverhead /= (LOOP_ROUNDS * 100);
-  printf("Average overhead for loop is: %llu\n", avgOverhead);
+  avgOverhead /= (LOOP_ROUNDS_OUTER * LOOP_ROUNDS_INNER);
+  printf("Average overhead for loop is: %f\n", avgOverhead);
 }
 
 /* Measure Overhead END */
@@ -300,7 +300,7 @@ int main()
 {
   /* measurement overhead */
   measureReadTimeOverhead();
-  // measureLoopOverhead();
+  measureLoopOverhead();
 
   // /* procedure call overhead */
   // measure0arg();
