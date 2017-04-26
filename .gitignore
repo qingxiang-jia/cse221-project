@@ -1,2 +1,6 @@
 *.o
+*.s
 *.out
+*.gch
+test0
+op1
