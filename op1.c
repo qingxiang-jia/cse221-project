@@ -19,6 +19,8 @@
 #define PROCESS_CREATION_ROUNDS 10000
 #define THREAD_CREATION_ROUNDS_OUTER 10
 #define THREAD_CREATION_ROUNDS_INNER 10
+#define CONTEX_SWITCH_PROCESS_ROUNDS 500
+#define CONTEX_SWITCH_THREAD_ROUNDS 10000
 
 /* Measure Overhead BEGIN */
 
@@ -414,7 +416,8 @@ void measureProcessCreationTime()
   printf("The average overhead for process creation is: %f\n", avgOverhead);
 }
 
-void *fRunByThread(void *void_ptr) {
+void *fRunByThread(void *void_ptr)
+{
   return NULL;
 }
 
@@ -422,8 +425,10 @@ void measureThreadCreationTime()
 {
   unsigned i, j;
   double avgOverhead;
-  for (i = 0; i < THREAD_CREATION_ROUNDS_OUTER; i++) {
-    for (j = 0; j < THREAD_CREATION_ROUNDS_INNER; j++) {
+  for (i = 0; i < THREAD_CREATION_ROUNDS_OUTER; i++)
+  {
+    for (j = 0; j < THREAD_CREATION_ROUNDS_INNER; j++)
+    {
       unsigned lo, hi, lo1, hi1;
       double start, end;
       int dummy = 0;
@@ -454,12 +459,71 @@ void measureThreadCreationTime()
       avgOverhead += (end - start - READ_TIME_OVERHEAD);
     }
   }
-  avgOverhead -= LOOP_OVERHEAD * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER; 
+  avgOverhead -= LOOP_OVERHEAD * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER;
   avgOverhead /= (10 * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER);
   printf("The average overhead for thread creation is: %f\n", avgOverhead);
 }
 
 /* Task Creation Time END */
+
+/* Context Switch Time BEGIN */
+
+void measureContextSwitchBetweenProcesses()
+{
+  unsigned i;
+  double avgCtxsw;
+  
+  for (i = 0; i < CONTEX_SWITCH_PROCESS_ROUNDS; i++)
+  {
+    int fd[2]; // fd_output (stuff to read), fd_input (stuff to write)
+    pipe(fd);  // create a pipe
+    unsigned dummyData = 77;
+
+    unsigned lo, hi, lo1, hi1;
+    double start, end;
+
+    pid_t pid = fork();
+
+    if (pid == -1) {
+      exit(-1);
+    }
+
+    if (pid != 0)
+    { // parent writes and then ctxsw to child
+      COUNT1(hi, lo)
+      write(fd[1], &dummyData, sizeof(dummyData));
+    }
+    else
+    { // child reads
+      read(fd[0], &dummyData, sizeof(dummyData));
+      exit(0);
+    }
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+
+    double ctxswX2Write = end - start;
+
+    lo = 0, hi = 0, lo1 = 0, hi1 = 0;
+    start = 0, end = 0;
+
+    COUNT1(hi, lo)
+    write(fd[1], &dummyData, sizeof(dummyData));
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+
+    double write = end - start;
+    double ctxsw = (ctxswX2Write - write) / 2;
+
+    // printf("%f\n", ctxsw);
+    avgCtxsw += ctxsw;
+  }
+  avgCtxsw /= CONTEX_SWITCH_PROCESS_ROUNDS;
+  printf("The average overhead for context switch between processes is: %f\n", avgCtxsw);
+}
+
+/* Context Switch Time END */
 
 int main()
 {
@@ -482,7 +546,10 @@ int main()
 
   // /* measure process/thread creation time */
   // measureProcessCreationTime();
-  measureThreadCreationTime();
+  // measureThreadCreationTime();
+
+  /* measure context switch time */
+  measureContextSwitchBetweenProcesses();
 
   return 0;
 }

@@ -62,3 +62,15 @@ machdep.cpu.brand_string: Intel(R) Core(TM) i5-4258U CPU @ 2.40GHz
 machdep.cpu.vendor: GenuineIntel
 machdep.cpu.max_ext: 2147483656
 machdep.cpu.max_basic: 13
+
+
+sysctl -a | grep proc
+kern.maxproc: 1064
+kern.maxfilesperproc: 10240
+kern.maxprocperuid: 709
+kern.ipc.maxextbkidleperproc: 1
+kern.aioprocmax: 16
+kern.procname: sysctl
+kern.memorystatus_sysprocs_idle_delay_time: 10
+machdep.cpu.processor_flag: 6
+security.mac.proc_enforce: 1
