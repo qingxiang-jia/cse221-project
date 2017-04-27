@@ -16,7 +16,7 @@
 #define PROCEDURE_CALL_ROUNDS_INNER 1000
 #define SYS_CALL_ROUNDS_OUTER 1000
 #define SYS_CALL_ROUNDS_INNER 1000
-#define PROCESS_CREATION_ROUNDS 10000
+#define PROCESS_CREATION_ROUNDS 100
 #define THREAD_CREATION_ROUNDS_OUTER 10
 #define THREAD_CREATION_ROUNDS_INNER 10
 #define CONTEX_SWITCH_PROCESS_ROUNDS 500
@@ -37,6 +37,7 @@ void measureReadTimeOverhead()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
+    // printf("%f\n", end - start);
   }
   avgOverhead /= READ_TIME_ROUNDS;
   printf("Average overhead for reading time is: %f\n", avgOverhead);
@@ -59,6 +60,7 @@ void measureLoopOverhead()
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start);
     avgOverhead -= READ_TIME_OVERHEAD;
+    printf("%f\n", (end - start) - READ_TIME_OVERHEAD);
   }
   avgOverhead /= (LOOP_ROUNDS_OUTER * LOOP_ROUNDS_INNER);
   printf("Average overhead for loop is: %f\n", avgOverhead);
@@ -130,6 +132,7 @@ void measure0arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 0 argument is: %f\n", avgOverhead);
@@ -161,6 +164,7 @@ void measure1arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 1 argument is: %f\n", avgOverhead);
@@ -191,6 +195,7 @@ void measure2arg()
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
@@ -223,6 +228,7 @@ void measure3arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 3 argument is: %f\n", avgOverhead);
@@ -254,6 +260,7 @@ void measure4arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 4 argument is: %f\n", avgOverhead);
@@ -285,6 +292,7 @@ void measure5arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 5 argument is: %f\n", avgOverhead);
@@ -316,6 +324,7 @@ void measure6arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    // printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 6 argument is: %f\n", avgOverhead);
@@ -347,6 +356,7 @@ void measure7arg()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER);
+    printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * PROCEDURE_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * PROCEDURE_CALL_ROUNDS_OUTER * PROCEDURE_CALL_ROUNDS_INNER);
   printf("The average overhead for procedure call with 7 argument is: %f\n", avgOverhead);
@@ -383,6 +393,7 @@ void measureSystemCallOverhead()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     avgOverhead += (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * SYS_CALL_ROUNDS_INNER);
+    printf("%f\n", (end - start - READ_TIME_OVERHEAD - LOOP_OVERHEAD * SYS_CALL_ROUNDS_INNER));
   }
   avgOverhead /= (10 * SYS_CALL_ROUNDS_OUTER * SYS_CALL_ROUNDS_INNER);
   printf("The average overhead for system call is: %f\n", avgOverhead);
@@ -410,6 +421,7 @@ void measureProcessCreationTime()
       exit(0);
     }
     avgOverhead += (end - start);
+    printf("%f\n", (end - start) - READ_TIME_OVERHEAD);
   }
   avgOverhead -= READ_TIME_OVERHEAD * PROCESS_CREATION_ROUNDS;
   avgOverhead /= PROCESS_CREATION_ROUNDS;
@@ -457,6 +469,7 @@ void measureThreadCreationTime()
       GETNUM(hi, lo, start)
       GETNUM(hi1, lo1, end)
       avgOverhead += (end - start - READ_TIME_OVERHEAD);
+      printf("%f\n", (end - start - READ_TIME_OVERHEAD));
     }
   }
   avgOverhead -= LOOP_OVERHEAD * THREAD_CREATION_ROUNDS_OUTER * THREAD_CREATION_ROUNDS_INNER;
@@ -520,6 +533,7 @@ void measureContextSwitchBetweenProcesses()
 
     // printf("%f\n", ctxsw);
     avgCtxsw += ctxsw;
+    printf("%f\n", ctxsw);
   }
   avgCtxsw /= CONTEX_SWITCH_PROCESS_ROUNDS;
   printf("The average overhead for context switch between processes is: %f\n", avgCtxsw);
@@ -555,7 +569,7 @@ void measureContextSwitchBetweenThreads()
     GETNUM(tHi, tLo, thStart)
     GETNUM(tHi1, tLo1, thEnd)
     avgOverhead += (thEnd - thStart);
-    // printf("%f\n", thEnd - thStart);
+    printf("%f\n", thEnd - thStart);
     tHi = 0, tLo = 0, tHi1 = 0, tLo1 = 0, thStart = 0, thEnd = 0;
   }
   avgOverhead /= CONTEX_SWITCH_THREAD_ROUNDS;
@@ -567,28 +581,28 @@ void measureContextSwitchBetweenThreads()
 int main()
 {
   /* measurement overhead */
-  measureReadTimeOverhead();
-  measureLoopOverhead();
+  // measureReadTimeOverhead();
+  // measureLoopOverhead();
 
-  /* procedure call overhead */
-  measure0arg();
-  measure1arg();
-  measure2arg();
-  measure3arg();
-  measure4arg();
-  measure5arg();
-  measure6arg();
-  measure7arg();
+  // /* procedure call overhead */
+  // measure0arg();
+  // measure1arg();
+  // measure2arg();
+  // measure3arg();
+  // measure4arg();
+  // measure5arg();
+  // measure6arg();
+  // measure7arg();
 
-  /* system call overhead */
-  measureSystemCallOverhead();
+  // /* system call overhead */
+  // measureSystemCallOverhead();
 
-  /* measure process/thread creation time */
-  measureProcessCreationTime();
-  measureThreadCreationTime();
+  // /* measure process/thread creation time */
+  // measureProcessCreationTime();
+  // measureThreadCreationTime();
 
-  /* measure context switch time */
-  measureContextSwitchBetweenProcesses();
+  // /* measure context switch time */
+  // measureContextSwitchBetweenProcesses();
   measureContextSwitchBetweenThreads();
 
   return 0;
