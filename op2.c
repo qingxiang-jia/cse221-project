@@ -8,21 +8,25 @@
 /* Measure RAM Access Time BEGIN */
 
 #define SZ_INT 4
-
-void expRAMAccessTime(int increment, int arraySize) {
+#define RAM_ACCESS_TIME_LOOP 100000
+void expRAMAccessTime(int arraySize)
+{
   int i;
   int j;
-  int *chunkPtr = malloc(SZ_INT * arraySize);
+  int *chunkPtr = malloc(arraySize);
   int *ptr = chunkPtr;
-  
-  if (chunkPtr == NULL) {
+
+  if (chunkPtr == NULL)
+  {
     printf("malloc failed");
     exit(1);
   }
-  double avg = 0;
+  double total = 0;
   double count = 0;
 
-  for (i = 0; i < arraySize; i += increment) {
+  printf("arraySize: %d \n", arraySize);
+  for (i = 0; i < RAM_ACCESS_TIME_LOOP; i++)
+  {
     double start, end;
     unsigned lo, hi, lo1, hi1;
     COUNT1(hi, lo)
@@ -30,26 +34,25 @@ void expRAMAccessTime(int increment, int arraySize) {
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
-    // ptr += increment;
-    ptr = chunkPtr + (rand() % arraySize);
-    avg += (end - start);
+    ptr = chunkPtr + (rand() % (arraySize / 4));
+    total += (end - start);
+    printf("%f\n", end - start);
     count++;
   }
-  printf("avg: %f\n", avg / count);
+  // printf("avg: %f\n", total / count);
   free(chunkPtr);
 }
 
-void measureRAMAccessTime() {
-  int increment;
+void measureRAMAccessTime()
+{
   int maxIncrement = 10;
   int arraySize;
-  int maxArraySize = 16777216; // 2^24
-  // for (increment = 1; increment <= maxIncrement; increment++) {
-    for (arraySize = 2; arraySize <= maxArraySize; arraySize *= 2) {
-      printf("increment: %d  arraySize: %d\n", increment, arraySize);
-      expRAMAccessTime(increment, arraySize);
-    }
-  // }
+  // int maxArraySize = 16777216; // 2^24
+  int maxArraySize = 536870912; // 2^29
+  for (arraySize = 4; arraySize <= maxArraySize; arraySize *= 2)
+  {
+    expRAMAccessTime(arraySize);
+  }
 }
 
 /* Measure RAM Access Time END */
