@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "count.h"
 #include "unrolled_mem_read.h"
+#include "unrolled_mem_write.h"
+#include "unrolled_long_double_ptr_inc.h"
 
 /* Measure RAM Access Time BEGIN */
 
@@ -60,11 +62,30 @@ void measureRAMAccessTime()
 
 /* Measure RAM Bandwidth BEGIN */
 
+#define LONG_DOUBLE_PTR_INCREMENT_COST 896000
+
+void ptrIncrementCost() {
+  int i;
+  double total = 0;
+  long double *ptr = 0;
+  for (i = 0; i < 1000; i++) {
+    unsigned lo, hi, lo1, hi1;
+    double start, end;
+    COUNT1(hi, lo)
+    // UNROLLED_LONG_DOUBLE_PTR_INC_LINE2048 // <- comment if you are not using it to speed up compilation
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    total += end - start;
+  }
+  printf("Avg cost for 8M/256 long double is %f cycles.\n", total / 1000);
+}
+
 double MBCycleToMBPerSecond(double MB, double cycles) {
   return (MB / (cycles)) * 2.4 * 1000000000;
 }
 
-void expBandwidth()
+void expBandwidthRead()
 {
   long double *chunkPtr = malloc(8388608); // 8MB, 16B per long double
   if (chunkPtr == NULL)
@@ -78,19 +99,47 @@ void expBandwidth()
   unsigned lo, hi, lo1, hi1;
   double start, end;
   COUNT1(hi, lo)
-  UNROLLED_MEM_READ_LINE524288
+  // UNROLLED_MEM_READ_LINE524288 // <- comment if you are not using it to speed up compilation
   // so many that I have to use macro recursively
   COUNT2(hi1, lo1)
   GETNUM(hi, lo, start)
   GETNUM(hi1, lo1, end)
-  printf("8MB data takes %f cycles, which is %f MB/s @ 2.4GHz\n", end - start, MBCycleToMBPerSecond(8.0, end - start));
+  // printf("8MB data takes %f cycles, which is %f MB/s @ 2.4GHz\n", end - start, MBCycleToMBPerSecond(8.0, end - start));
+  printf("%f\n", MBCycleToMBPerSecond(8.0, end - start - LONG_DOUBLE_PTR_INCREMENT_COST));
+
+  free(chunkPtr);
+}
+
+void expBandwidthWrite()
+{
+  long double *chunkPtr = malloc(8388608); // 8MB, 16B per long double
+  if (chunkPtr == NULL)
+  {
+    printf("malloc failed");
+    exit(1);
+  }
+  long double *ptr = chunkPtr;
+  
+  unsigned lo, hi, lo1, hi1;
+  double start, end;
+  COUNT1(hi, lo)
+  // UNROLLED_MEM_WRITE_LINE524288 // <- comment if you are not using it to speed up compilation
+  // so many that I have to use macro recursively
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  // printf("8MB data takes %f cycles, which is %f MB/s @ 2.4GHz\n", end - start, MBCycleToMBPerSecond(8.0, end - start));
+  printf("%f\n", MBCycleToMBPerSecond(8.0, end - start - LONG_DOUBLE_PTR_INCREMENT_COST));
 
   free(chunkPtr);
 }
 
 void measureRAMBandwidth()
 {
-  expBandwidth();
+  int i;
+  for (i = 0; i < 1000; i++) {
+    expBandwidthRead();
+  }
 }
 
 /* Measure RAM Bandwidth END */
