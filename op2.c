@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "count.h"
+#include "unrolled_mem_read.h"
 
 /* Measure RAM Access Time BEGIN */
 
@@ -57,9 +58,47 @@ void measureRAMAccessTime()
 
 /* Measure RAM Access Time END */
 
+/* Measure RAM Bandwidth BEGIN */
+
+double MBCycleToMBPerSecond(double MB, double cycles) {
+  return (MB / (cycles)) * 2.4 * 1000000000;
+}
+
+void expBandwidth()
+{
+  long double *chunkPtr = malloc(8388608); // 8MB, 16B per long double
+  if (chunkPtr == NULL)
+  {
+    printf("malloc failed");
+    exit(1);
+  }
+  long double *ptr = chunkPtr;
+  long double sum = 0;
+  
+  unsigned lo, hi, lo1, hi1;
+  double start, end;
+  COUNT1(hi, lo)
+  UNROLLED_MEM_READ_LINE524288
+  // so many that I have to use macro recursively
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  printf("8MB data takes %f cycles, which is %f MB/s @ 2.4GHz\n", end - start, MBCycleToMBPerSecond(8.0, end - start));
+
+  free(chunkPtr);
+}
+
+void measureRAMBandwidth()
+{
+  expBandwidth();
+}
+
+/* Measure RAM Bandwidth END */
+
 int main()
 {
   srand(time(NULL));
-  measureRAMAccessTime();
+  // measureRAMAccessTime();
+  measureRAMBandwidth();
   return 0;
 }
