@@ -17,6 +17,6 @@ op2: op2.o
 
 op2.o: op2.c
 	clang -O0 -c op2.c count.h
-	
+
 clean:
 	rm -f *.o *.out test0 *.s *.gch op1 op2

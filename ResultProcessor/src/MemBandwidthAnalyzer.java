@@ -21,7 +21,7 @@ public class MemBandwidthAnalyzer {
   }
 
   public static void main(String...args) {
-    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_bandwidth_read_final");
+    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_band_temp");
     for (List<Double> list : lists) {
       double initAvg = MemLatencyAnalyzer.avg(list);
       double correctedAvg = MemLatencyAnalyzer.avgNoOutliers(list, initAvg * 2);
