@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SDCalculator {
-  public static void calculate(List<Double> numbers) {
+  public static double calculate(List<Double> numbers) {
     int n = numbers.size();
     double mean;
     double sum = 0;
@@ -17,8 +17,9 @@ public class SDCalculator {
     for (Double number : numbers) {
       sum += Math.pow(((double) number) - mean, 2.0);
     }
-    System.out.println("Mean: " + mean);
-    System.out.println("SD: " + Math.sqrt(sum / (double) n));
+    return (Math.sqrt(sum / (double) n));
+//    System.out.println("Mean: " + mean);
+//    System.out.println("SD: " + Math.sqrt(sum / (double) n));
   }
 
   public static List<Double> getList(String path) {

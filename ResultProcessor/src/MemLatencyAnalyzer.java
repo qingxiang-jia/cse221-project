@@ -34,25 +34,28 @@ public class MemLatencyAnalyzer {
     return total / list.size();
   }
 
-  public static double avgNoOutliers(List<Double> list, double threshold) {
+  public static double avgNoOutliers(List<Double> list, List<Double> nonoutliers, double threshold) {
     double total = 0;
     int count = 0;
     for (double value : list) {
       if (value < threshold) {
         total += value;
         count++;
+        nonoutliers.add(value);
       }
     }
     return total / count;
   }
 
   public static void main(String...args) {
-    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_latency_linear");
+    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/temp_result_op2/mem_latency_random");
     int size = 4;
     for (List<Double> list : lists) {
       double initAvg = avg(list);
-      double correctedAvg = avgNoOutliers(list, initAvg * 2);
-      System.out.printf("arraySize: %-17d initial avg: %-17f corrected average %f\n", size *= 2, initAvg, correctedAvg);
+      List<Double> nonoutliders = new ArrayList<>();
+      double correctedAvg = avgNoOutliers(list, nonoutliders, initAvg * 2);
+      double sd = SDCalculator.calculate(nonoutliders);
+      System.out.printf("arraySize: %-17d initial avg: %-17f corrected average: %-17f sd: %-17f\n", size *= 2, initAvg, correctedAvg, sd);
     }
   }
 }
