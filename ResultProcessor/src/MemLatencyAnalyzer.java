@@ -47,7 +47,7 @@ public class MemLatencyAnalyzer {
   }
 
   public static void main(String...args) {
-    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_latency_random");
+    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_latency_linear");
     int size = 4;
     for (List<Double> list : lists) {
       double initAvg = avg(list);

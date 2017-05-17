@@ -11,7 +11,7 @@
 /* Measure RAM Access Time BEGIN */
 
 #define SZ_INT 4
-#define RAM_ACCESS_TIME_LOOP 100000
+#define RAM_ACCESS_TIME_LOOP 100
 void expRAMAccessTime(int arraySize)
 {
   int i;
@@ -169,6 +169,7 @@ int main()
 {
   srand(time(NULL));
   // measureRAMAccessTime();
-  measureRAMBandwidth();
+  // measureRAMBandwidth();
+  measureRAMAccessTimeLinearStep();
   return 0;
 }
