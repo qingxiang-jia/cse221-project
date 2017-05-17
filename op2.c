@@ -104,6 +104,8 @@ void expBandwidthRead()
   double totalCycles = 0;
   double totalBytes = 0;
 
+  double measurement[100000]; // for sd calculation
+
   for (i = 0; i < 100000; i++)
   {
     double start, end;
@@ -114,7 +116,13 @@ void expBandwidthRead()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     totalCycles += end - start; // cycles
+    measurement[i] = end - start; // for sd calculation
     totalBytes += 512 * 8;
+  }
+
+  for (i = 0; i < 100000; i++)
+  {
+    printf("%f\n", measurement[i]); // for sd calculation
   }
 
   double totalMB = totalBytes / 1024 / 1024;
@@ -138,6 +146,8 @@ void expBandwidthWrite()
   double totalCycles = 0;
   double totalBytes = 0;
 
+  double measurement[100000]; // for sd calculation
+
   for (i = 0; i < 100000; i++)
   {
     double start, end;
@@ -148,7 +158,14 @@ void expBandwidthWrite()
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     totalCycles += end - start; // cycles
+    // printf("%f\n", end - start);
+    measurement[i] = end - start; // for sd calculation
     totalBytes += 512 * 8;
+  }
+
+  for (i = 0; i < 100000; i++)
+  {
+    printf("%f\n", measurement[i]); // for sd calculation
   }
 
   double totalMB = totalBytes / 1024 / 1024;
@@ -159,29 +176,26 @@ void expBandwidthWrite()
   free(chunkPtr);
 }
 
-void measureRAMBandwidth()
-{
-  // expBandwidthRead();
-  expBandwidthWrite();
-}
-
 /* Measure RAM Bandwidth END */
 
 /* Measure Overhead of Page Fault*/
-void measurePageFault() {
+void measurePageFault()
+{
   uint64_t start, end, totalTime = 0;
   unsigned cycles_high, cycles_low, cycles_high1, cycles_low1;
-  char*  map;
+  char *map;
   int i, fd, COUNT = 100;
-  uint64_t FILE_SIZE = 1200*1024*1024, offset = 0, PAGE_SIZE = 4096; //file size is 1.2GB
+  uint64_t FILE_SIZE = 1200 * 1024 * 1024, offset = 0, PAGE_SIZE = 4096; //file size is 1.2GB
 
-  if((fd = open("testfile", O_RDONLY)) < 0) {
+  if ((fd = open("testfile", O_RDONLY)) < 0)
+  {
     printf("Can't open testfile");
     exit(1);
   }
 
-  for(i = 0; i < COUNT; i++) {
-    system("sudo purge");	// clear RAM and disk cache of mac OS
+  for (i = 0; i < COUNT; i++)
+  {
+    system("sudo purge"); // clear RAM and disk cache of mac OS
     map = mmap(NULL, PAGE_SIZE, PROT_READ, MAP_PRIVATE, fd, offset);
 
     COUNT1(cycles_high, cycles_low)
@@ -193,13 +207,13 @@ void measurePageFault() {
       totalTime += end - start;
     munmap(map, PAGE_SIZE);
 
-    printf("time_%d = %llu\n", i+1, end -start);
+    printf("time_%d = %llu\n", i + 1, end - start);
     // offset += 20*1024*1024; //3MB
     // if(offset > FILE_SIZE)  offset = 0;
   }
 
   close(fd);
-  printf("Page fault time = %f\n", totalTime/(double)COUNT);
+  printf("Page fault time = %f\n", totalTime / (double)COUNT);
 }
 
 /*End of Measurement for Page Fault*/
@@ -208,7 +222,8 @@ int main()
 {
   srand(time(NULL));
   // measureRAMAccessTime();
-  // measureRAMBandwidth();
-  measurePageFault();
+  // measurePageFault();
+  // expBandwidthRead();
+  expBandwidthWrite();
   return 0;
 }

@@ -20,12 +20,15 @@ public class MemBandwidthAnalyzer {
     return lists;
   }
 
+  public static double cycleToSecond(double cycle) {
+    return cycle / 2.4e9;
+  }
+
   public static void main(String...args) {
-    List<List<Double>> lists = getLists("/Users/lee/Dropbox/CSE221/project/mem_band_temp");
-    for (List<Double> list : lists) {
-      double initAvg = MemLatencyAnalyzer.avg(list);
-      double correctedAvg = MemLatencyAnalyzer.avgNoOutliers(list, initAvg * 2);
-      System.out.printf("initial avg: %-17f corrected average %f\n", initAvg, correctedAvg);
-    }
+    List<Double> list = SDCalculator.getList("/Users/lee/Dropbox/CSE221/project/mem_write_raw");
+    double initAvg = MemLatencyAnalyzer.avg(list);
+    ArrayList<Double> nonoutliers = new ArrayList<>();
+    double correctedAvg = MemLatencyAnalyzer.avgNoOutliers(list, nonoutliers, initAvg * 2);
+    System.out.printf("For 4KB data\ninitial avg: %-17f corrected average: %-17f sd: %-17f\n", initAvg, correctedAvg, SDCalculator.calculate(nonoutliers));
   }
 }
