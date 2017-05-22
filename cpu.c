@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <errno.h>
-#include "count.h"
+#include "headers/count.h"
 
 #define READ_TIME_ROUNDS 10000
 #define READ_TIME_OVERHEAD 31

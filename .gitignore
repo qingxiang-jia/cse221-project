@@ -2,6 +2,5 @@
 *.s
 *.out
 *.gch
-test0
-op1
 testfile
+.DS_Store
