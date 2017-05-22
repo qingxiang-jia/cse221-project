@@ -15,8 +15,8 @@ arraySize: 32768             initial avg: 30.859560         corrected average: 2
 arraySize: 65536             initial avg: 31.437630         corrected average: 30.446361         sd: 6.701353         
 arraySize: 131072            initial avg: 111.652860        corrected average: 34.858191         sd: 23.418373        
 arraySize: 262144            initial avg: 52.984660         corrected average: 37.690152         sd: 10.586599        
-arraySize: 524288            initial avg: 46.228620         corrected average: 42.883033         sd: 10.425909   
 
+arraySize: 524288            initial avg: 46.228620         corrected average: 42.883033         sd: 10.425909   
 arraySize: 1048576           initial avg: 67.089720         corrected average: 47.328590         sd: 9.445737         
 arraySize: 2097152           initial avg: 109.049260        corrected average: 85.270428         sd: 63.335351  
 

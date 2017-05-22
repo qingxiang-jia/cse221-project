@@ -13,7 +13,7 @@
 /* Measure RAM Access Time BEGIN */
 
 #define SZ_INT 4
-#define RAM_ACCESS_TIME_LOOP 100
+#define RAM_ACCESS_TIME_LOOP 1000000
 void expRAMAccessTime(int arraySize)
 {
   int i;

@@ -1,22 +1,16 @@
 # Makefile for CSE 221 project
 
-test0:	test0.o
-	clang -O0 -o test0 test0.o
+cpu: cpu.o
+	clang -O0 -o cpu cpu.o
 
-test0.o:	test0.c
-	clang -O0 -c test0.c count.h
+cpu.o: cpu.c
+	clang -O0 -c cpu.c count.h
 
-op1: op1.o
-	clang -O0 -o op1 op1.o
+mem: mem.o
+	clang -O0 -o mem mem.o
 
-op1.o: op1.c
-	clang -O0 -c op1.c count.h
-
-op2: op2.o
-	clang -O0 -o op2 op2.o
-
-op2.o: op2.c
-	clang -O0 -c op2.c count.h
+mem.o: mem.c
+	clang -O0 -c mem.c count.h
 
 clean:
-	rm -f *.o *.out test0 *.s *.gch op1 op2
+	rm -f *.o *.out test0 *.s *.gch cpu mem
