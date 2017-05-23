@@ -14,44 +14,56 @@
 
 /* Measure Round Trip Time BEGIN */
 
-void server(int port)
+void sleep500ms() {
+  struct timespec tspec1, tspec2;
+  tspec1.tv_sec = 0;
+  tspec2.tv_nsec = 500000000L; // 500 ms
+  nanosleep(&tspec1, &tspec2);
+}
+
+#define PAYLOAD_SIZE 67108864 // 64 MB
+void server(int port) // sizeof(char) == 1
 {
-  char str[100];
-  int listen_fd, comm_fd;
+  char *payloadPtr = malloc(PAYLOAD_SIZE);
+  int listenSocket, dataSocket;
 
-  struct sockaddr_in servaddr;
+  struct sockaddr_in address;
 
-  listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+  listenSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-  bzero(&servaddr, sizeof(servaddr));
+  bzero(&address, sizeof(address));
 
-  servaddr.sin_family = AF_INET;
-  servaddr.sin_addr.s_addr = htons(INADDR_ANY);
-  servaddr.sin_port = htons(port);
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = htons(INADDR_ANY);
+  address.sin_port = htons(port);
 
-  bind(listen_fd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  bind(listenSocket, (struct sockaddr *)&address, sizeof(address));
 
-  listen(listen_fd, 10);
+  listen(listenSocket, 10);
 
-  comm_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL);
+  dataSocket = accept(listenSocket, (struct sockaddr *)NULL, NULL);
 
   while (1)
   {
-    bzero(str, 100);
-    read(comm_fd, str, 100);
-    printf("Echoing back - %s", str);
-    write(comm_fd, str, strlen(str) + 1);
+    bzero(payloadPtr, PAYLOAD_SIZE);
+    double timestamp;
+    unsigned lo, hi;
+    GETTIME(lo, hi)
+    read(dataSocket, payloadPtr, PAYLOAD_SIZE);
+    GETNUM(lo, hi, timestamp)
+    printf("%f\n", timestamp);
   }
+  close(listenSocket);
+  close(dataSocket);
 }
 
 void client(char *serverAddress, int port)
 {
-  int sockfd, n;
-  char sendline[100];
-  char recvline[100];
+  int socketTCP, n;
+  char *payloadPtr = malloc(PAYLOAD_SIZE);
   struct sockaddr_in servaddr;
 
-  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  socketTCP = socket(AF_INET, SOCK_STREAM, 0);
   bzero(&servaddr, sizeof servaddr);
 
   servaddr.sin_family = AF_INET;
@@ -59,21 +71,22 @@ void client(char *serverAddress, int port)
 
   inet_pton(AF_INET, serverAddress, &(servaddr.sin_addr));
 
-  connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
-  while (1)
+  int i = 10;
+  while (i--)
   {
-    bzero(sendline, 100);
-    bzero(recvline, 100);
-    fgets(sendline, 100, stdin); /*stdin = 0 , for standard input */
-
-    write(sockfd, sendline, strlen(sendline) + 1);
-    read(sockfd, recvline, 100);
-    printf("%s", recvline);
+    bzero(payloadPtr, PAYLOAD_SIZE);
+    double timestamp;
+    unsigned lo, hi;
+    GETTIME(lo, hi)
+    write(socketTCP, payloadPtr, PAYLOAD_SIZE + 1);
+    GETNUM(hi, lo, timestamp)
+    printf("%f\n", timestamp);
+    sleep500ms(); // gives some time for server to set up for each iteration
   }
+  close(socketTCP);
 }
-
-/* Measure Round Trip Time END */
 
 int main(int argc, char *argv[])
 {
@@ -93,3 +106,5 @@ int main(int argc, char *argv[])
   }
   return 0;
 }
+
+/* Measure Round Trip Time END */

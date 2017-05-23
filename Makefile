@@ -25,4 +25,4 @@ fs.o: fs.c
 	clang -O0 -c fs.c headers/count.h
 
 clean:
-	rm -f *.o *.out test0 *.s *.gch cpu mem net fs
+	rm -f *.o *.out test0 *.s *.gch cpu mem net fs ./headers/*.gch
