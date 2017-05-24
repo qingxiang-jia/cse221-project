@@ -185,7 +185,7 @@ void measurePageFault()
   unsigned cycles_high, cycles_low, cycles_high1, cycles_low1;
   char *map;
   int i, fd, COUNT = 100;
-  uint64_t FILE_SIZE = 1200 * 1024 * 1024, offset = 0, PAGE_SIZE = 4096; //file size is 1.2GB
+  uint64_t FILE_SIZE = 1200 * 1024 * 1024, offset = 0, pageSize = 4096; //file size is 1.2GB
 
   if ((fd = open("testfile", O_RDONLY)) < 0)
   {
@@ -196,7 +196,7 @@ void measurePageFault()
   for (i = 0; i < COUNT; i++)
   {
     system("sudo purge"); // clear RAM and disk cache of mac OS
-    map = mmap(NULL, PAGE_SIZE, PROT_READ, MAP_PRIVATE, fd, offset);
+    map = mmap(NULL, pageSize, PROT_READ, MAP_PRIVATE, fd, offset);
 
     COUNT1(cycles_high, cycles_low)
     char ch = map[0];
@@ -205,7 +205,7 @@ void measurePageFault()
     GETNUM(cycles_high1, cycles_low1, end)
     if (end - start < 1000000)
       totalTime += end - start;
-    munmap(map, PAGE_SIZE);
+    munmap(map, pageSize);
 
     printf("time_%d = %llu\n", i + 1, end - start);
     // offset += 20*1024*1024; //3MB
