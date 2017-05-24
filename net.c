@@ -12,15 +12,21 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-/* Shared Functions BEGIN */
+/* Measure Round Trip Time BEGIN */
 
-void sleep500ms() {
+/* Measure Round Trip Time END */
+
+/* Measure Peak Bandwidth BEGIN */
+
+void sleep500ms()
+{
   struct timespec tspec1, tspec2;
   tspec1.tv_sec = 0;
   tspec2.tv_nsec = 500000000L; // 500 ms
   nanosleep(&tspec1, &tspec2);
 }
 
+#define PAYLOAD_SIZE_2 67108864        // 64 MB, char is 1 byte
 void server(int port, int payloadSize) // sizeof(char) == 1
 {
   char *payloadPtr = malloc(payloadSize);
@@ -52,19 +58,21 @@ void server(int port, int payloadSize) // sizeof(char) == 1
     received = read(dataSocket, payloadPtr, payloadSize);
     timestamp = getNano();
     accu += received;
-    if (received == 0) {
+    if (received == 0)
+    {
       loop = 0;
     }
-    if (accu >= payloadSize) {
+    if (accu >= payloadSize)
+    {
       printf("%-15llu %zd\n", timestamp, accu);
-      accu = 0;   
+      accu = 0;
     }
   }
   close(listenSocket);
   close(dataSocket);
 }
 
-void client(char *serverAddress, int port, int payloadSize, int i)
+void client(char *serverAddress, int port, int payloadSize)
 {
   int socketTCP, n;
   char *payloadPtr = malloc(payloadSize);
@@ -80,6 +88,7 @@ void client(char *serverAddress, int port, int payloadSize, int i)
 
   connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
+  int i = 10;
   ssize_t sent;
   uint64_t timestamp;
   while (i--)
@@ -93,40 +102,23 @@ void client(char *serverAddress, int port, int payloadSize, int i)
   close(socketTCP);
 }
 
-void serverClient(int argc, char *argv[], int payloadSize)
+int main(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
     printf("role: %s\nport: %s\n", "server", argv[2]);
-    server(atoi(argv[2]), payloadSize);
+    server(atoi(argv[2]), PAYLOAD_SIZE_2);
   }
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    client(argv[2], atoi(argv[2]), payloadSize, 10);
+    client(argv[2], atoi(argv[2]), PAYLOAD_SIZE_2);
   }
   else
   {
     printf("net -s <port>\nnet -c <ip> <port>");
   }
+  return 0;
 }
-
-/* Shared Functions END */
-
-/* Measure Round Trip Time BEGIN */
-
-
-
-/* Measure Round Trip Time END */
-
-/* Measure Peak Bandwidth BEGIN */
-
-#define PAYLOAD_SIZE_2 67108864 // 64 MB, char is 1 byte
 
 /* Measure Peak Bandwidth END */
-
-int main(int argc, char *argv[])
-{
-  // measure peak bandwidth
-  serverClient(argc, argv, PAYLOAD_SIZE_2);
-}
