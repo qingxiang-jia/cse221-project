@@ -12,13 +12,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-/* Measure Round Trip Time BEGIN */
-
-
-
-/* Measure Round Trip Time END */
-
-/* Measure Peak Bandwidth BEGIN */
+/* Shared Functions BEGIN */
 
 void sleep500ms() {
   struct timespec tspec1, tspec2;
@@ -27,7 +21,6 @@ void sleep500ms() {
   nanosleep(&tspec1, &tspec2);
 }
 
-#define PAYLOAD_SIZE_2 67108864 // 64 MB, char is 1 byte
 void server(int port, int payloadSize) // sizeof(char) == 1
 {
   char *payloadPtr = malloc(payloadSize);
@@ -49,7 +42,6 @@ void server(int port, int payloadSize) // sizeof(char) == 1
 
   dataSocket = accept(listenSocket, (struct sockaddr *)NULL, NULL);
 
-  int i = 0;
   uint64_t timestamp;
   ssize_t received = 0;
   ssize_t accu = 0;
@@ -72,7 +64,7 @@ void server(int port, int payloadSize) // sizeof(char) == 1
   close(dataSocket);
 }
 
-void client(char *serverAddress, int port, int payloadSize)
+void client(char *serverAddress, int port, int payloadSize, int i)
 {
   int socketTCP, n;
   char *payloadPtr = malloc(payloadSize);
@@ -88,7 +80,6 @@ void client(char *serverAddress, int port, int payloadSize)
 
   connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
-  int i = 10;
   ssize_t sent;
   uint64_t timestamp;
   while (i--)
@@ -102,23 +93,40 @@ void client(char *serverAddress, int port, int payloadSize)
   close(socketTCP);
 }
 
-int main(int argc, char *argv[])
+void serverClient(int argc, char *argv[], int payloadSize)
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
     printf("role: %s\nport: %s\n", "server", argv[2]);
-    server(atoi(argv[2]), PAYLOAD_SIZE_2);
+    server(atoi(argv[2]), payloadSize);
   }
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    client(argv[2], atoi(argv[2]), PAYLOAD_SIZE_2);
+    client(argv[2], atoi(argv[2]), payloadSize, 10);
   }
   else
   {
     printf("net -s <port>\nnet -c <ip> <port>");
   }
-  return 0;
 }
 
+/* Shared Functions END */
+
+/* Measure Round Trip Time BEGIN */
+
+
+
+/* Measure Round Trip Time END */
+
+/* Measure Peak Bandwidth BEGIN */
+
+#define PAYLOAD_SIZE_2 67108864 // 64 MB, char is 1 byte
+
 /* Measure Peak Bandwidth END */
+
+int main(int argc, char *argv[])
+{
+  // measure peak bandwidth
+  serverClient(argc, argv, PAYLOAD_SIZE_2);
+}
