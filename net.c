@@ -27,10 +27,10 @@ void sleep500ms() {
   nanosleep(&tspec1, &tspec2);
 }
 
-#define PAYLOAD_SIZE 67108864 // 64 MB
-void server(int port) // sizeof(char) == 1
+#define PAYLOAD_SIZE_2 67108864 // 64 MB, char is 1 byte
+void server(int port, int payloadSize) // sizeof(char) == 1
 {
-  char *payloadPtr = malloc(PAYLOAD_SIZE);
+  char *payloadPtr = malloc(payloadSize);
   int listenSocket, dataSocket;
 
   struct sockaddr_in address;
@@ -56,14 +56,14 @@ void server(int port) // sizeof(char) == 1
   unsigned loop = 1;
   while (loop)
   {
-    bzero(payloadPtr, PAYLOAD_SIZE);
-    received = read(dataSocket, payloadPtr, PAYLOAD_SIZE);
+    bzero(payloadPtr, payloadSize);
+    received = read(dataSocket, payloadPtr, payloadSize);
     timestamp = getNano();
     accu += received;
     if (received == 0) {
       loop = 0;
     }
-    if (accu >= PAYLOAD_SIZE) {
+    if (accu >= payloadSize) {
       printf("%-15llu %zd\n", timestamp, accu);
       accu = 0;   
     }
@@ -72,10 +72,10 @@ void server(int port) // sizeof(char) == 1
   close(dataSocket);
 }
 
-void client(char *serverAddress, int port)
+void client(char *serverAddress, int port, int payloadSize)
 {
   int socketTCP, n;
-  char *payloadPtr = malloc(PAYLOAD_SIZE);
+  char *payloadPtr = malloc(payloadSize);
   struct sockaddr_in servaddr;
 
   socketTCP = socket(AF_INET, SOCK_STREAM, 0);
@@ -93,8 +93,8 @@ void client(char *serverAddress, int port)
   uint64_t timestamp;
   while (i--)
   {
-    bzero(payloadPtr, PAYLOAD_SIZE);
-    sent = write(socketTCP, payloadPtr, PAYLOAD_SIZE);
+    bzero(payloadPtr, payloadSize);
+    sent = write(socketTCP, payloadPtr, payloadSize);
     timestamp = getNano();
     printf("%-15llu %zd\n", timestamp, sent);
     sleep(1);
@@ -102,17 +102,17 @@ void client(char *serverAddress, int port)
   close(socketTCP);
 }
 
-int main1(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
     printf("role: %s\nport: %s\n", "server", argv[2]);
-    server(atoi(argv[2]));
+    server(atoi(argv[2]), PAYLOAD_SIZE_2);
   }
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    client(argv[2], atoi(argv[2]));
+    client(argv[2], atoi(argv[2]), PAYLOAD_SIZE_2);
   }
   else
   {
