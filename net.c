@@ -43,15 +43,24 @@ void server(int port) // sizeof(char) == 1
 
   dataSocket = accept(listenSocket, (struct sockaddr *)NULL, NULL);
 
-  while (1)
+  int i = 0;
+  uint64_t timestamp;
+  ssize_t received = 0;
+  ssize_t accu = 0;
+  unsigned loop = 1;
+  while (loop)
   {
     bzero(payloadPtr, PAYLOAD_SIZE);
-    double timestamp;
-    unsigned lo, hi;
-    GETTIME(lo, hi)
-    read(dataSocket, payloadPtr, PAYLOAD_SIZE);
-    GETNUM(lo, hi, timestamp)
-    printf("%f\n", timestamp);
+    received = read(dataSocket, payloadPtr, PAYLOAD_SIZE);
+    timestamp = getNano();
+    accu += received;
+    if (received == 0) {
+      loop = 0;
+    }
+    if (accu >= PAYLOAD_SIZE) {
+      printf("%-15llu %zd\n", timestamp, accu);
+      accu = 0;   
+    }
   }
   close(listenSocket);
   close(dataSocket);
@@ -74,16 +83,15 @@ void client(char *serverAddress, int port)
   connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
   int i = 10;
+  ssize_t sent;
+  uint64_t timestamp;
   while (i--)
   {
     bzero(payloadPtr, PAYLOAD_SIZE);
-    double timestamp;
-    unsigned lo, hi;
-    GETTIME(lo, hi)
-    write(socketTCP, payloadPtr, PAYLOAD_SIZE + 1);
-    GETNUM(hi, lo, timestamp)
-    printf("%f\n", timestamp);
-    sleep500ms(); // gives some time for server to set up for each iteration
+    sent = write(socketTCP, payloadPtr, PAYLOAD_SIZE);
+    timestamp = getNano();
+    printf("%-15llu %zd\n", timestamp, sent);
+    sleep(1);
   }
   close(socketTCP);
 }
