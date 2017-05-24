@@ -14,6 +14,107 @@
 
 /* Measure Round Trip Time BEGIN */
 
+void pong(int port, int payloadSize) // sizeof(char) == 1
+{
+  char *payloadPtr = malloc(payloadSize);
+  int listenSocket, dataSocket;
+
+  struct sockaddr_in address;
+
+  listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+  bzero(&address, sizeof(address));
+
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = htons(INADDR_ANY);
+  address.sin_port = htons(port);
+
+  bind(listenSocket, (struct sockaddr *)&address, sizeof(address));
+
+  listen(listenSocket, 10);
+
+  dataSocket = accept(listenSocket, (struct sockaddr *)NULL, NULL);
+
+  ssize_t received = 0;
+  ssize_t accu = 0;
+  unsigned loop = 1;
+  while (loop)
+  {
+    bzero(payloadPtr, payloadSize);
+    received = read(dataSocket, payloadPtr, payloadSize);
+    if (received > 0) {
+      write(dataSocket, payloadPtr, payloadSize);
+    }
+    accu += received;
+    if (received == 0)
+    {
+      loop = 0;
+    }
+    if (accu >= payloadSize)
+    {
+      accu = 0;
+    }
+  }
+  close(listenSocket);
+  close(dataSocket);
+}
+
+void ping(char *serverAddress, int port, int payloadSize)
+{
+  int socketTCP, n;
+  char *payloadPtr = malloc(payloadSize);
+  struct sockaddr_in servaddr;
+
+  socketTCP = socket(AF_INET, SOCK_STREAM, 0);
+  bzero(&servaddr, sizeof servaddr);
+
+  servaddr.sin_family = AF_INET;
+  servaddr.sin_port = htons(port);
+
+  inet_pton(AF_INET, serverAddress, &(servaddr.sin_addr));
+
+  connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+
+  int i = 100;
+  ssize_t sent;
+  ssize_t received;
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+  while (i--)
+  {
+    start = 0, end = 0, lo = 0, hi = 0, lo1 = 0, hi1 = 0;
+    bzero(payloadPtr, payloadSize);
+    COUNT1(hi, lo)
+    sent = write(socketTCP, payloadPtr, payloadSize);
+    received = read(socketTCP, payloadPtr, payloadSize);
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    printf("%-15f %zd\n", end - start, sent);
+  }
+  close(socketTCP);
+}
+
+#define PAYLOAD_SIZE_1 64
+int main(int argc, char *argv[])
+{
+  if (argc == 3 && strcmp(argv[1], "-s") == 0)
+  {
+    printf("role: %s\nport: %s\n", "server", argv[2]);
+    pong(atoi(argv[2]), PAYLOAD_SIZE_1);
+  }
+  else if (argc == 4 && strcmp(argv[1], "-c") == 0)
+  {
+    printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
+    ping(argv[2], atoi(argv[2]), PAYLOAD_SIZE_1);
+  }
+  else
+  {
+    printf("net -s <port>\nnet -c <ip> <port>");
+  }
+  return 0;
+}
+
 /* Measure Round Trip Time END */
 
 /* Measure Peak Bandwidth BEGIN */
@@ -26,7 +127,6 @@ void sleep500ms()
   nanosleep(&tspec1, &tspec2);
 }
 
-#define PAYLOAD_SIZE_2 67108864        // 64 MB, char is 1 byte
 void server(int port, int payloadSize) // sizeof(char) == 1
 {
   char *payloadPtr = malloc(payloadSize);
@@ -102,7 +202,8 @@ void client(char *serverAddress, int port, int payloadSize)
   close(socketTCP);
 }
 
-int main(int argc, char *argv[])
+#define PAYLOAD_SIZE_2 67108864        // 64 MB, char is 1 byte
+int main2(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
