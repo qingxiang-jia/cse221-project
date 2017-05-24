@@ -14,6 +14,12 @@
 
 /* Measure Round Trip Time BEGIN */
 
+
+
+/* Measure Round Trip Time END */
+
+/* Measure Peak Bandwidth BEGIN */
+
 void sleep500ms() {
   struct timespec tspec1, tspec2;
   tspec1.tv_sec = 0;
@@ -96,7 +102,7 @@ void client(char *serverAddress, int port)
   close(socketTCP);
 }
 
-int main(int argc, char *argv[])
+int main1(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
@@ -115,4 +121,4 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-/* Measure Round Trip Time END */
+/* Measure Peak Bandwidth END */
