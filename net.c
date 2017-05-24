@@ -96,7 +96,7 @@ void ping(char *serverAddress, int port, int payloadSize)
 }
 
 #define PAYLOAD_SIZE_1 64
-int main(int argc, char *argv[])
+int main1(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)
   {
@@ -223,3 +223,109 @@ int main2(int argc, char *argv[])
 }
 
 /* Measure Peak Bandwidth END */
+
+/* Measure Setup and Tear-down BEGIN */
+
+void server1(int port, int payloadSize) // sizeof(char) == 1
+{
+  char *payloadPtr = malloc(payloadSize);
+  int listenSocket, dataSocket;
+
+  struct sockaddr_in address;
+
+  listenSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+  bzero(&address, sizeof(address));
+
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = htons(INADDR_ANY);
+  address.sin_port = htons(port);
+
+  bind(listenSocket, (struct sockaddr *)&address, sizeof(address));
+
+  listen(listenSocket, 10);
+
+  dataSocket = accept(listenSocket, (struct sockaddr *)NULL, NULL);
+
+  ssize_t received = 0;
+  ssize_t accu = 0;
+  unsigned loop = 1;
+  while (loop)
+  {
+    bzero(payloadPtr, payloadSize);
+    received = read(dataSocket, payloadPtr, payloadSize);
+    // printf("server received: %zd\n", received);
+    accu += received;
+    if (received == 0)
+    {
+      loop = 0;
+    }
+    if (accu >= payloadSize)
+    {
+      accu = 0;
+    }
+  }
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+  COUNT1(hi, lo)
+  close(listenSocket);
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  printf("teardown: %f\n", end - start);
+  close(dataSocket);
+}
+
+void client1(char *serverAddress, int port, int payloadSize)
+{
+  int socketTCP, n;
+  char *payloadPtr = malloc(payloadSize);
+  struct sockaddr_in servaddr;
+
+  socketTCP = socket(AF_INET, SOCK_STREAM, 0);
+  bzero(&servaddr, sizeof servaddr);
+
+  servaddr.sin_family = AF_INET;
+  servaddr.sin_port = htons(port);
+
+  inet_pton(AF_INET, serverAddress, &(servaddr.sin_addr));
+
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+  COUNT1(hi, lo)
+  connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  printf("setup: %f\n", end - start);
+
+  int i = 1;
+  ssize_t sent;
+  while (i--)
+  {
+    bzero(payloadPtr, payloadSize);
+    sent = write(socketTCP, payloadPtr, payloadSize);
+  }
+}
+
+#define PAYLOAD_SIZE_3 128
+int main(int argc, char *argv[])
+{
+  if (argc == 3 && strcmp(argv[1], "-s") == 0)
+  {
+    // printf("role: %s\nport: %s\n", "server", argv[2]);
+    server1(atoi(argv[2]), PAYLOAD_SIZE_3);
+  }
+  else if (argc == 4 && strcmp(argv[1], "-c") == 0)
+  {
+    // printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
+    client1(argv[2], atoi(argv[2]), PAYLOAD_SIZE_3);
+  }
+  else
+  {
+    printf("net -s <port>\nnet -c <ip> <port>");
+  }
+  return 0;
+}
+
+/* Measure Setup and Tear-down END */
