@@ -1,0 +1,53 @@
+λ@ ~/D/C/project> diskutil info /
+   Device Identifier:        disk1
+   Device Node:              /dev/disk1
+   Whole:                    Yes
+   Part of Whole:            disk1
+   Device / Media Name:      APPLE SSD SD0256F
+
+   Volume Name:              Macintosh HD
+   Mounted:                  Yes
+   Mount Point:              /
+
+   Content (IOContent):      Apple_HFS
+   File System Personality:  Journaled HFS+
+   Type (Bundle):            hfs
+   Name (User Visible):      Mac OS Extended (Journaled)
+   Journal:                  Journal size 24576 KB at offset 0x19502000
+   Owners:                   Enabled
+
+   OS Can Be Installed:      Yes
+   Recovery Disk:            disk0s3
+   Media Type:               Generic
+   Protocol:                 PCI
+   SMART Status:             Not Supported
+   Volume UUID:              9BE9B0DE-B002-323C-8D7B-2419524BC6F1
+   Disk / Partition UUID:    CAE3FD71-D84C-4BAD-A298-B52A6C1F1DA3
+
+   Disk Size:                249.8 GB (249769230336 Bytes) (exactly 487830528 512-Byte-Units)
+   Device Block Size:        512 Bytes
+
+   Volume Total Space:       249.8 GB (249769230336 Bytes) (exactly 487830528 512-Byte-Units)
+   Volume Used Space:        152.0 GB (151958245376 Bytes) (exactly 296793448 512-Byte-Units) (60.8%)
+   Volume Available Space:   97.8 GB (97810984960 Bytes) (exactly 191037080 512-Byte-Units) (39.2%)
+   Allocation Block Size:    4096 Bytes
+
+   Read-Only Media:          No
+   Read-Only Volume:         No
+
+   Device Location:          Internal
+   Removable Media:          Fixed
+
+   Solid State:              Yes
+   Virtual:                  Yes
+   OS 9 Drivers:             No
+   Low Level Format:         Not supported
+
+   This disk is a Core Storage Logical Volume (LV).  Core Storage Information:
+   LV UUID:                  CAE3FD71-D84C-4BAD-A298-B52A6C1F1DA3
+   LVF UUID:                 01AC40C6-7AFA-4993-AF34-7AA10F6E707A
+   LVG UUID:                 E0B6222A-5467-440A-8BB0-8F8F92CFD878
+   PV UUID (disk):           5C7C910F-F51E-440F-BD3C-47C3192FB7E2 (disk0s2)
+   Fusion Drive:             No
+   Encrypted:                No
+
