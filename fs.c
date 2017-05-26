@@ -30,6 +30,15 @@
 #define SZ_2G 2147483648
 #define SZ_1G 1073741824
 #define SZ_10MB 10485760
+#define SZ_512MB 536870912
+#define SZ_256MB 268435456
+#define SZ_128MB 134217728
+#define SZ_64MB 67108864
+#define SZ_32MB 33554432
+#define SZ_16MB 16777216
+#define SZ_8MB 8388608
+#define SZ_4MB 4194304
+#define SZ_2MB 2097152
 #define SZ_1MB 1048576
 #define SSD_BLOCK_SIZE 4096
 #define CYC_PER_SECOND 2.4e9
@@ -121,28 +130,20 @@ int main1()
 void readFileNoCache(uint64_t fileSize, char *path)
 {
   int file = open(path, O_RDONLY);
-  // fcntl(file, F_NOCACHE, 1);
+  fcntl(file, F_NOCACHE, 1);
   char *buf = malloc(SZ_10MB); // 1 char = 1 byte
   uint64_t numOfBlocks = fileSize / SSD_BLOCK_SIZE;
   uint64_t i;
 
   double start, end;
   unsigned lo, hi, lo1, hi1;
-  COUNT1(hi, lo)
-  for (i = 0; i < numOfBlocks; i++)
-  {
-    read(file, buf, SSD_BLOCK_SIZE);
-  }
-  COUNT2(hi1, lo1)
-  GETNUM(hi, lo, start)
-  GETNUM(hi1, lo1, end)
-  double rate = (fileSize / 1024.0 / 1024.0) / ((end - start) / CYC_PER_SECOND);
-  printf("%f MB/s\n", rate);
-  close(file);
 
+  double rate;
+  double perBlockTime;
   for (i = 0; i < 10; i++) {
+    system("sudo purge");
     file = open(path, O_RDONLY);
-    // fcntl(file, F_NOCACHE, 1);
+    fcntl(file, F_NOCACHE, 1);
     uint64_t j;
     start = 0, end = 0, lo = 0, hi = 0, lo1 = 0, hi1 = 0;
     COUNT1(hi, lo)
@@ -153,16 +154,36 @@ void readFileNoCache(uint64_t fileSize, char *path)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
     rate = (fileSize / 1024.0 / 1024.0) / ((end - start) / CYC_PER_SECOND);
-    printf("%f MB/s\n", rate); // next: compute per block time
+    perBlockTime = (end - start) / (double) numOfBlocks / CYC_PER_SECOND * 1000;
+    printf("%-10f MB/s           %-10f ms per block\n", rate, perBlockTime);
     close(file);
   }
-
   free(buf);
 }
 
 int main() {
-  system("sudo purge");
-  readFileNoCache(SZ_10MB, "/Users/lee/Documents/10m");
+  printf("1MB\n");
+  readFileNoCache(SZ_1MB, "/Users/lee/Documents/1m");
+  printf("2MB\n");
+  readFileNoCache(SZ_2MB, "/Users/lee/Documents/2m");
+  printf("4MB\n");
+  readFileNoCache(SZ_4MB, "/Users/lee/Documents/4m");
+  printf("8MB\n");
+  readFileNoCache(SZ_8MB, "/Users/lee/Documents/8m");
+  printf("16MB\n");
+  readFileNoCache(SZ_16MB, "/Users/lee/Documents/16m");
+  printf("32MB\n");
+  readFileNoCache(SZ_32MB, "/Users/lee/Documents/32m");
+  printf("64MB\n");
+  readFileNoCache(SZ_64MB, "/Users/lee/Documents/64m");
+  printf("128MB\n");
+  readFileNoCache(SZ_128MB, "/Users/lee/Documents/128m");
+  printf("256MB\n");
+  readFileNoCache(SZ_256MB, "/Users/lee/Documents/256m");
+  printf("512MB\n");
+  readFileNoCache(SZ_512MB, "/Users/lee/Documents/512m");
+  printf("1G\n");
+  readFileNoCache(SZ_1G, "/Users/lee/Documents/1g");
   return 0;
 }
 
