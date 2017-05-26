@@ -1,0 +1,132 @@
+1MB
+6.984621   MB/s           0.559264   ms per block
+7.007567   MB/s           0.557433   ms per block
+6.278577   MB/s           0.622155   ms per block
+6.687645   MB/s           0.584099   ms per block
+9.658696   MB/s           0.404428   ms per block
+7.688527   MB/s           0.508062   ms per block
+7.417844   MB/s           0.526602   ms per block
+7.814234   MB/s           0.499889   ms per block
+7.230213   MB/s           0.540268   ms per block
+7.690818   MB/s           0.507911   ms per block
+avg: 0.531011        std: 0.055479
+2MB
+8.900276   MB/s           0.438891   ms per block
+7.592868   MB/s           0.514463   ms per block
+9.580517   MB/s           0.407729   ms per block
+8.333316   MB/s           0.468751   ms per block
+7.044296   MB/s           0.554527   ms per block
+8.979869   MB/s           0.435001   ms per block
+10.373613  MB/s           0.376556   ms per block
+7.922689   MB/s           0.493046   ms per block
+9.267612   MB/s           0.421495   ms per block
+8.008789   MB/s           0.487745   ms per block
+avg: 0.459820        std: 0.051076
+4MB
+7.988837   MB/s           0.488964   ms per block
+10.577765  MB/s           0.369289   ms per block
+9.911179   MB/s           0.394126   ms per block
+9.893780   MB/s           0.394819   ms per block
+10.171423  MB/s           0.384042   ms per block
+8.140383   MB/s           0.479861   ms per block
+6.390450   MB/s           0.611264   ms per block
+6.974078   MB/s           0.560110   ms per block
+7.617243   MB/s           0.512817   ms per block
+9.833153   MB/s           0.397253   ms per block
+avg: 0.459255        std: 0.079651
+8MB
+10.600609  MB/s           0.368493   ms per block
+7.646891   MB/s           0.510829   ms per block
+9.909819   MB/s           0.394180   ms per block
+7.438581   MB/s           0.525134   ms per block
+10.440004  MB/s           0.374162   ms per block
+10.413943  MB/s           0.375098   ms per block
+10.578316  MB/s           0.369270   ms per block
+10.821765  MB/s           0.360962   ms per block
+7.464240   MB/s           0.523329   ms per block
+10.150535  MB/s           0.384832   ms per block
+avg: 0.418629        std: 0.066854
+16MB
+8.834154   MB/s           0.442176   ms per block
+8.250990   MB/s           0.473428   ms per block
+8.940446   MB/s           0.436919   ms per block
+8.997172   MB/s           0.434164   ms per block
+10.939539  MB/s           0.357076   ms per block
+10.919692  MB/s           0.357725   ms per block
+10.957554  MB/s           0.356489   ms per block
+9.114652   MB/s           0.428568   ms per block
+9.097930   MB/s           0.429356   ms per block
+8.905889   MB/s           0.438614   ms per block
+avg: 0.415452        std: 0.040006
+32MB
+10.042453  MB/s           0.388974   ms per block
+10.083608  MB/s           0.387386   ms per block
+9.844272   MB/s           0.396804   ms per block
+11.111033  MB/s           0.351565   ms per block
+10.904825  MB/s           0.358213   ms per block
+11.169491  MB/s           0.349725   ms per block
+10.856443  MB/s           0.359809   ms per block
+9.657503   MB/s           0.404478   ms per block
+10.712992  MB/s           0.364627   ms per block
+10.234131  MB/s           0.381689   ms per block
+avg: 0.374327        std: 0.018819
+64MB
+11.135828  MB/s           0.350782   ms per block
+10.514111  MB/s           0.371525   ms per block
+10.416497  MB/s           0.375006   ms per block
+10.389628  MB/s           0.375976   ms per block
+10.388832  MB/s           0.376005   ms per block
+10.381254  MB/s           0.376279   ms per block
+10.394501  MB/s           0.375800   ms per block
+10.161925  MB/s           0.384401   ms per block
+10.503159  MB/s           0.371912   ms per block
+10.687450  MB/s           0.365499   ms per block
+avg: 0.372319        std: 0.008480
+128MB
+11.160601  MB/s           0.350004   ms per block
+11.078380  MB/s           0.352601   ms per block
+11.159513  MB/s           0.350038   ms per block
+10.972360  MB/s           0.356008   ms per block
+11.020379  MB/s           0.354457   ms per block
+10.743486  MB/s           0.363592   ms per block
+10.735775  MB/s           0.363854   ms per block
+11.832401  MB/s           0.330132   ms per block
+11.231012  MB/s           0.347809   ms per block
+11.033629  MB/s           0.354031   ms per block
+avg: 0.352253        std: 0.008969
+256MB
+11.712561  MB/s           0.333509   ms per block
+11.311434  MB/s           0.345336   ms per block
+11.039232  MB/s           0.353852   ms per block
+10.905539  MB/s           0.358190   ms per block
+11.084478  MB/s           0.352407   ms per block
+11.215912  MB/s           0.348278   ms per block
+10.924905  MB/s           0.357555   ms per block
+10.927993  MB/s           0.357454   ms per block
+11.125066  MB/s           0.351122   ms per block
+10.910372  MB/s           0.358031   ms per block
+avg: 0.351573        std: 0.007335
+512MB
+10.764607  MB/s           0.362879   ms per block
+10.512297  MB/s           0.371589   ms per block
+11.070302  MB/s           0.352858   ms per block
+10.620400  MB/s           0.367806   ms per block
+10.707662  MB/s           0.364809   ms per block
+10.775560  MB/s           0.362510   ms per block
+10.836259  MB/s           0.360480   ms per block
+11.051324  MB/s           0.353464   ms per block
+10.779554  MB/s           0.362376   ms per block
+10.777953  MB/s           0.362430   ms per block
+avg: 0.362120        std: 0.005418
+1G
+10.751862  MB/s           0.363309   ms per block
+10.932583  MB/s           0.357303   ms per block
+10.844948  MB/s           0.360191   ms per block
+10.871406  MB/s           0.359314   ms per block
+10.932870  MB/s           0.357294   ms per block
+10.872972  MB/s           0.359262   ms per block
+10.920565  MB/s           0.357697   ms per block
+10.823940  MB/s           0.360890   ms per block
+10.749783  MB/s           0.363379   ms per block
+10.955072  MB/s           0.356570   ms per block
+avg: 0.359521        std: 0.002315

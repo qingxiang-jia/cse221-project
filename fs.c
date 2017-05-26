@@ -127,7 +127,7 @@ int main1()
 
 /* Measure File Read Time BEGIN */
 
-void readFileNoCache(uint64_t fileSize, char *path)
+void readFileNoCacheSeq(uint64_t fileSize, char *path)
 {
   int file = open(path, O_RDONLY);
   fcntl(file, F_NOCACHE, 1);
@@ -161,29 +161,95 @@ void readFileNoCache(uint64_t fileSize, char *path)
   free(buf);
 }
 
+void readFileNoCacheRand(uint64_t fileSize, char *path)
+{
+  int file = open(path, O_RDONLY);
+  fcntl(file, F_NOCACHE, 1);
+  char *buf = malloc(SZ_10MB); // 1 char = 1 byte
+  uint64_t numOfBlocks = fileSize / SSD_BLOCK_SIZE;
+  uint64_t i;
+
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+
+  time_t t;
+  srand((unsigned) time(&t));
+  double rate;
+  double perBlockTime;
+  for (i = 0; i < 10; i++) {
+    system("sudo purge");
+    file = open(path, O_RDONLY);
+    fcntl(file, F_NOCACHE, 1);
+    uint64_t iterations = numOfBlocks / 2;
+    off_t *offset = malloc(iterations * sizeof(off_t));
+    uint64_t j;
+    for (j = 0; j < iterations; j++) {
+      offset[j] = (off_t) (rand() % (fileSize - SSD_BLOCK_SIZE));
+    }
+
+    start = 0, end = 0, lo = 0, hi = 0, lo1 = 0, hi1 = 0;
+    COUNT1(hi, lo)
+    for (j = 0; j < iterations; j++) {
+      lseek(file, offset[j], SEEK_SET);
+      read(file, buf, SSD_BLOCK_SIZE);
+    }
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    rate = ((double) iterations * (double) SSD_BLOCK_SIZE / 1024.0 / 1024.0) / ((end - start) / CYC_PER_SECOND);
+    perBlockTime = (end - start) / (double) iterations / CYC_PER_SECOND * 1000;
+    printf("%-10f MB/s           %-10f ms per block\n", rate, perBlockTime);
+    close(file);
+    free(offset);
+  }
+  free(buf);
+}
+
 int main() {
+  // printf("1MB\n");
+  // readFileNoCacheSeq(SZ_1MB, "/Users/lee/Documents/1m");
+  // printf("2MB\n");
+  // readFileNoCacheSeq(SZ_2MB, "/Users/lee/Documents/2m");
+  // printf("4MB\n");
+  // readFileNoCacheSeq(SZ_4MB, "/Users/lee/Documents/4m");
+  // printf("8MB\n");
+  // readFileNoCacheSeq(SZ_8MB, "/Users/lee/Documents/8m");
+  // printf("16MB\n");
+  // readFileNoCacheSeq(SZ_16MB, "/Users/lee/Documents/16m");
+  // printf("32MB\n");
+  // readFileNoCacheSeq(SZ_32MB, "/Users/lee/Documents/32m");
+  // printf("64MB\n");
+  // readFileNoCacheSeq(SZ_64MB, "/Users/lee/Documents/64m");
+  // printf("128MB\n");
+  // readFileNoCacheSeq(SZ_128MB, "/Users/lee/Documents/128m");
+  // printf("256MB\n");
+  // readFileNoCacheSeq(SZ_256MB, "/Users/lee/Documents/256m");
+  // printf("512MB\n");
+  // readFileNoCacheSeq(SZ_512MB, "/Users/lee/Documents/512m");
+  // printf("1G\n");
+  // readFileNoCacheSeq(SZ_1G, "/Users/lee/Documents/1g");
   printf("1MB\n");
-  readFileNoCache(SZ_1MB, "/Users/lee/Documents/1m");
+  readFileNoCacheRand(SZ_1MB, "/Users/lee/Documents/1m");
   printf("2MB\n");
-  readFileNoCache(SZ_2MB, "/Users/lee/Documents/2m");
+  readFileNoCacheRand(SZ_2MB, "/Users/lee/Documents/2m");
   printf("4MB\n");
-  readFileNoCache(SZ_4MB, "/Users/lee/Documents/4m");
+  readFileNoCacheRand(SZ_4MB, "/Users/lee/Documents/4m");
   printf("8MB\n");
-  readFileNoCache(SZ_8MB, "/Users/lee/Documents/8m");
+  readFileNoCacheRand(SZ_8MB, "/Users/lee/Documents/8m");
   printf("16MB\n");
-  readFileNoCache(SZ_16MB, "/Users/lee/Documents/16m");
+  readFileNoCacheRand(SZ_16MB, "/Users/lee/Documents/16m");
   printf("32MB\n");
-  readFileNoCache(SZ_32MB, "/Users/lee/Documents/32m");
+  readFileNoCacheRand(SZ_32MB, "/Users/lee/Documents/32m");
   printf("64MB\n");
-  readFileNoCache(SZ_64MB, "/Users/lee/Documents/64m");
+  readFileNoCacheRand(SZ_64MB, "/Users/lee/Documents/64m");
   printf("128MB\n");
-  readFileNoCache(SZ_128MB, "/Users/lee/Documents/128m");
+  readFileNoCacheRand(SZ_128MB, "/Users/lee/Documents/128m");
   printf("256MB\n");
-  readFileNoCache(SZ_256MB, "/Users/lee/Documents/256m");
+  readFileNoCacheRand(SZ_256MB, "/Users/lee/Documents/256m");
   printf("512MB\n");
-  readFileNoCache(SZ_512MB, "/Users/lee/Documents/512m");
+  readFileNoCacheRand(SZ_512MB, "/Users/lee/Documents/512m");
   printf("1G\n");
-  readFileNoCache(SZ_1G, "/Users/lee/Documents/1g");
+  readFileNoCacheRand(SZ_1G, "/Users/lee/Documents/1g");
   return 0;
 }
 
