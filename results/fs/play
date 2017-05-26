@@ -1,0 +1,67 @@
+1GB
+offset = 32 * 4 KB
+633.538528 MB/s
+2212.828672 MB/s
+
+offset = 64 * 4 KB
+443.906730 MB/s
+1552.867705 MB/s
+
+128
+564.834783 MB/s
+1836.547291 MB/s
+
+256
+491.610417 MB/s
+1115.066154 MB/s
+
+512
+498.339998 MB/s
+930.681125 MB/s
+
+1024
+477.179029 MB/s
+529.521485 MB/s
+
+2048
+563.321677 MB/s
+1277.242519 MB/s
+
+
+
+@1024, effect of SSD cache
+λ@ ~/D/C/project> fs
+539.416282 MB/s
+read 256 time
+1009.299008 MB/s
+
+λ@ ~/D/C/project> fs
+628.920160 MB/s
+read 256 time
+1303.973642 MB/s
+
+λ@ ~/D/C/project> fs
+648.146999 MB/s
+read 256 time
+1831.971568 MB/s
+
+@10MB, no effect of SSD cache
+λ@ ~/D/C/project> fs
+454.045921 MB/s
+read 74 time
+3408.343685 MB/s
+
+λ@ ~/D/C/project> fs
+578.009983 MB/s
+read 74 time
+3509.709711 MB/s
+
+λ@ ~/D/C/project> fs
+580.052403 MB/s
+read 74 time
+3415.582108 MB/s
+
+λ@ ~/D/C/project> fs
+563.401687 MB/s
+read 74 time
+3563.225672 MB/s
