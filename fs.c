@@ -37,14 +37,14 @@ void measureFileCacheSize(uint64_t fileSize, char *path)
 {
   int largeFile = open(path, O_RDONLY);
   char *buf = malloc(SZ_10MB); // 1 char = 1 byte
-  uint64_t numOfChunks = fileSize / SSD_BLOCK_SIZE;
+  uint64_t numOfBlocks = fileSize / SSD_BLOCK_SIZE;
   uint64_t i;
 
   uint64_t k;
   double start, end;
   unsigned lo, hi, lo1, hi1;
   COUNT1(hi, lo)
-  for (i = 0; i < numOfChunks; i++)
+  for (i = 0; i < numOfBlocks; i++)
   {
     k = read(largeFile, buf, SSD_BLOCK_SIZE);
   }
@@ -82,9 +82,10 @@ void measureFileCacheSize(uint64_t fileSize, char *path)
     printf("%f MB/s\n", rate);
     close(largeFile);
   }
+  free(buf);
 }
 
-int main()
+int main1()
 {
   system("sudo purge");
   measureFileCacheSize(SZ_1G, "/Users/lee/Documents/1g");
@@ -110,8 +111,59 @@ int main()
   system("sudo purge");
   measureFileCacheSize(SZ_8G, "/Users/lee/Documents/8g");
   // printf("\n");
-
   return 0;
 }
 
 /* Measure File Cache Size END */
+
+/* Measure File Read Time BEGIN */
+
+void readFileNoCache(uint64_t fileSize, char *path)
+{
+  int file = open(path, O_RDONLY);
+  // fcntl(file, F_NOCACHE, 1);
+  char *buf = malloc(SZ_10MB); // 1 char = 1 byte
+  uint64_t numOfBlocks = fileSize / SSD_BLOCK_SIZE;
+  uint64_t i;
+
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+  COUNT1(hi, lo)
+  for (i = 0; i < numOfBlocks; i++)
+  {
+    read(file, buf, SSD_BLOCK_SIZE);
+  }
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  double rate = (fileSize / 1024.0 / 1024.0) / ((end - start) / CYC_PER_SECOND);
+  printf("%f MB/s\n", rate);
+  close(file);
+
+  for (i = 0; i < 10; i++) {
+    file = open(path, O_RDONLY);
+    // fcntl(file, F_NOCACHE, 1);
+    uint64_t j;
+    start = 0, end = 0, lo = 0, hi = 0, lo1 = 0, hi1 = 0;
+    COUNT1(hi, lo)
+    for (j = 0; j < numOfBlocks; j++) {
+      read(file, buf, SSD_BLOCK_SIZE);
+    }
+    COUNT2(hi1, lo1)
+    GETNUM(hi, lo, start)
+    GETNUM(hi1, lo1, end)
+    rate = (fileSize / 1024.0 / 1024.0) / ((end - start) / CYC_PER_SECOND);
+    printf("%f MB/s\n", rate); // next: compute per block time
+    close(file);
+  }
+
+  free(buf);
+}
+
+int main() {
+  system("sudo purge");
+  readFileNoCache(SZ_10MB, "/Users/lee/Documents/10m");
+  return 0;
+}
+
+/* Measure File Read Time END */
