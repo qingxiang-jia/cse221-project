@@ -1,30 +1,134 @@
-arraySize: 8                 initial avg: 96.475260         corrected average: 27.907914         sd: 4.580319         
-arraySize: 16                initial avg: 33.296370         corrected average: 28.478127         sd: 4.622010         
-arraySize: 32                initial avg: 29.097990         corrected average: 29.042682         sd: 4.779400         
-arraySize: 64                initial avg: 29.135500         corrected average: 29.053453         sd: 4.720609         
-arraySize: 128               initial avg: 29.017800         corrected average: 29.013431         sd: 4.725550         
-arraySize: 256               initial avg: 29.069520         corrected average: 29.053503         sd: 4.736444         
-arraySize: 512               initial avg: 29.077350         corrected average: 29.063745         sd: 4.754192         
-arraySize: 1024              initial avg: 31.215470         corrected average: 29.296744         sd: 4.955828         
-arraySize: 2048              initial avg: 46.769280         corrected average: 29.485487         sd: 5.029141         
-arraySize: 4096              initial avg: 29.182500         corrected average: 29.147148         sd: 4.860515         
-arraySize: 8192              initial avg: 29.529960         corrected average: 29.339325         sd: 5.062446         
-arraySize: 16384             initial avg: 38.270370         corrected average: 29.524198         sd: 5.488134         
-arraySize: 32768             initial avg: 30.859560         corrected average: 29.140374         sd: 6.055779 
+stride: 64
+avg: 9.396000   std: 0.014880
+avg: 9.526500   std: 0.003074
+avg: 9.393900   std: 0.003562
+avg: 9.395100   std: 0.001921
+avg: 9.393300   std: 0.003900
+avg: 9.392400   std: 0.003231
+avg: 9.392700   std: 0.004920
+avg: 9.393600   std: 0.003980
+avg: 9.390600   std: 0.005660
+avg: 9.395100   std: 0.002700
+avg: 9.396600   std: 0.011368
+avg: 9.478500   std: 0.231561
+avg: 9.500700   std: 0.309156
+avg: 15.221700   std: 0.592119
+avg: 15.679000   std: 1.299014
+avg: 16.384200   std: 3.304110
+avg: 35.126333   std: 0.459852
+avg: 38.933100   std: 11.808291
+avg: 79.700333   std: 46.740399
+avg: 137.031333   std: 25.278442
+avg: 164.243000   std: 1.803580
+avg: 165.569400   std: 5.187000
+avg: 163.326900   std: 3.114729
+avg: 161.413500   std: 2.940892
+avg: 167.577600   std: 1.059932
 
-arraySize: 65536             initial avg: 31.437630         corrected average: 30.446361         sd: 6.701353         
-arraySize: 131072            initial avg: 111.652860        corrected average: 34.858191         sd: 23.418373        
-arraySize: 262144            initial avg: 52.984660         corrected average: 37.690152         sd: 10.586599        
+stride: 128
+avg: 10.562100   std: 0.167082
+avg: 10.296300   std: 0.502982
+avg: 9.525300   std: 0.002100
+avg: 9.528600   std: 0.002939
+avg: 9.526800   std: 0.003842
+avg: 9.529200   std: 0.004069
+avg: 9.527100   std: 0.001375
+avg: 9.527100   std: 0.004253
+avg: 9.525600   std: 0.002939
+avg: 9.528600   std: 0.004200
+avg: 9.528900   std: 0.004847
+avg: 9.815400   std: 0.437728
+avg: 9.743333   std: 0.294166
+avg: 14.973000   std: 0.000000
+avg: 15.027300   std: 0.165911
+avg: 18.126667   std: 7.604857
+avg: 35.696100   std: 1.569424
+avg: 35.982000   std: 1.290424
+avg: 65.841667   std: 39.053089
+avg: 121.869667   std: 22.775288
+avg: 163.006667   std: 2.143683
+avg: 163.497600   std: 2.152950
+avg: 165.330600   std: 2.825005
+avg: 164.816700   std: 0.616703
+avg: 163.447333   std: 1.935949
 
-arraySize: 524288            initial avg: 46.228620         corrected average: 42.883033         sd: 10.425909   
-arraySize: 1048576           initial avg: 67.089720         corrected average: 47.328590         sd: 9.445737         
-arraySize: 2097152           initial avg: 109.049260        corrected average: 85.270428         sd: 63.335351  
+stride: 256
+avg: 10.382667   std: 0.586033
+avg: 9.868800   std: 0.001470
+avg: 9.460800   std: 0.065455
+avg: 9.529200   std: 0.004285
+avg: 9.528300   std: 0.003662
+avg: 9.530400   std: 0.004409
+avg: 9.530100   std: 0.004657
+avg: 9.525300   std: 0.002830
+avg: 9.529800   std: 0.006030
+avg: 9.526800   std: 0.003600
+avg: 9.525300   std: 0.004337
+avg: 9.527700   std: 0.004337
+avg: 9.531000   std: 0.003795
+avg: 14.944200   std: 0.004874
+avg: 15.231300   std: 0.861910
+avg: 15.126300   std: 0.006497
+avg: 36.877800   std: 0.237388
+avg: 37.566600   std: 1.229021
+avg: 49.324000   std: 8.787278
+avg: 181.375000   std: 75.045768
+avg: 176.502900   std: 2.038565
+avg: 175.389000   std: 2.160523
+avg: 178.439100   std: 1.740947
+avg: 178.198800   std: 2.729943
+avg: 176.764800   std: 2.081914
 
-arraySize: 4194304           initial avg: 1581.448900       corrected average: 187.623593        sd: 113.267341       
-arraySize: 8388608           initial avg: 239.439850        corrected average: 165.838650        sd: 77.327680        
-arraySize: 16777216          initial avg: 303.913280        corrected average: 200.757284        sd: 79.438334        
-arraySize: 33554432          initial avg: 3721.636500       corrected average: 375.645859        sd: 721.918673       
-arraySize: 67108864          initial avg: 2462.865520       corrected average: 535.987218        sd: 1014.701454      
-arraySize: 134217728         initial avg: 2845.513430       corrected average: 870.773428        sd: 1384.569900      
-arraySize: 268435456         initial avg: 5394.890020       corrected average: 1571.139449       sd: 1673.295002      
-arraySize: 536870912         initial avg: 3498.599390       corrected average: 2560.470514       sd: 1968.267417      
+stride: 512
+avg: 10.362333   std: 0.340627
+avg: 9.532667   std: 0.003771
+avg: 9.480375   std: 0.063965
+avg: 9.396000   std: 0.003464
+avg: 9.395667   std: 0.003300
+avg: 9.396667   std: 0.002749
+avg: 9.395000   std: 0.004472
+avg: 9.397000   std: 0.003742
+avg: 9.405300   std: 0.023178
+avg: 9.398100   std: 0.003015
+avg: 9.396000   std: 0.004025
+avg: 9.396600   std: 0.003499
+avg: 9.395400   std: 0.002939
+avg: 15.048300   std: 0.004124
+avg: 15.049500   std: 0.002766
+avg: 15.483600   std: 0.023346
+avg: 40.176600   std: 0.610001
+avg: 41.416333   std: 1.531785
+avg: 52.348000   std: 8.983454
+avg: 177.927333   std: 10.426086
+avg: 231.521400   std: 67.421602
+avg: 207.064500   std: 1.455460
+avg: 222.893700   std: 44.010460
+avg: 207.256800   std: 1.882870
+avg: 207.971100   std: 1.608580
+
+stride: 1024
+avg: 10.621500   std: 0.152731
+avg: 10.296900   std: 0.503378
+avg: 9.529200   std: 0.004285
+avg: 9.528600   std: 0.005817
+avg: 9.526800   std: 0.002400
+avg: 9.529800   std: 0.003600
+avg: 9.528900   std: 0.004253
+avg: 9.526500   std: 0.005572
+avg: 9.528000   std: 0.005020
+avg: 9.525300   std: 0.003900
+avg: 9.528600   std: 0.004609
+avg: 9.814500   std: 0.436343
+avg: 9.503100   std: 0.324314
+avg: 14.440500   std: 1.627501
+avg: 15.064200   std: 0.076181
+avg: 15.607500   std: 0.032843
+avg: 46.910333   std: 19.149097
+avg: 36.832800   std: 0.210420
+avg: 43.097700   std: 4.474708
+avg: 93.423000   std: 23.272359
+avg: 213.695100   std: 3.558514
+avg: 223.603200   std: 2.368973
+avg: 222.744000   std: 5.537751
+avg: 223.677900   std: 1.826935
+avg: 228.491700   std: 2.295807

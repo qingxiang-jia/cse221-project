@@ -10,7 +10,7 @@
 #include "headers/unrolled_mem_write.h"
 #include "headers/unrolled_long_double_ptr_inc.h"
 
-/* Measure RAM Access Time BEGIN */
+/* Measure RAM Access Time Old BEGIN */
 
 #define SZ_INT 4
 #define RAM_ACCESS_TIME_LOOP 1000000
@@ -60,7 +60,7 @@ void measureRAMAccessTime()
   }
 }
 
-/* Measure RAM Access Time END */
+/* Measure RAM Access Time Old END */
 
 /* Measure RAM Bandwidth BEGIN */
 
@@ -115,7 +115,7 @@ void expBandwidthRead()
     COUNT2(hi1, lo1)
     GETNUM(hi, lo, start)
     GETNUM(hi1, lo1, end)
-    totalCycles += end - start; // cycles
+    totalCycles += end - start;   // cycles
     measurement[i] = end - start; // for sd calculation
     totalBytes += 512 * 8;
   }
@@ -178,7 +178,7 @@ void expBandwidthWrite()
 
 /* Measure RAM Bandwidth END */
 
-/* Measure Overhead of Page Fault*/
+/* Measure Overhead of Page Fault */
 void measurePageFault()
 {
   uint64_t start, end, totalTime = 0;
@@ -216,9 +216,63 @@ void measurePageFault()
   printf("Page fault time = %f\n", totalTime / (double)COUNT);
 }
 
-/*End of Measurement for Page Fault*/
+/* End of Measurement for Page Fault */
+
+/* Measure RAM Access Time BEGIN */
+
+void measureAccessTime(uint64_t stride, uint64_t arraySize)
+{
+  uint64_t i; // sizeof(uint64_t) == 8
+  uint64_t j;
+  uint64_t nextIndex = 0;
+  uint64_t rounds = 1000;
+  uint64_t *array = malloc(arraySize);
+  uint64_t numOfElem = arraySize / sizeof(uint64_t);
+  if (array == NULL)
+  {
+    printf("malloc failed, exiting\n");
+    exit(1);
+  }
+  for (i = 0; i < numOfElem; i++) {
+    array[i] = (stride + i) % numOfElem;
+  }
+
+  double start, end;
+  unsigned lo, hi, lo1, hi1;
+
+  COUNT1(hi, lo)
+  for (i = 0; i < rounds; i++)
+  {
+    nextIndex = array[nextIndex];
+  }
+  COUNT2(hi1, lo1)
+  GETNUM(hi, lo, start)
+  GETNUM(hi1, lo1, end)
+  double perAccessCycles = (end - start) / (double)rounds;
+  printf("%f\n", perAccessCycles);
+  free(array);
+}
 
 int main()
+{
+  uint64_t strideIndex, arraySize;
+  uint64_t strides[] = {64/*, 128, 256, 512, 1024*/};
+  uint64_t totalRepeat = 10;
+  uint64_t repeat;
+  for (strideIndex = 0; strideIndex < 1; strideIndex++) {
+    printf("stride: %llu\n", strides[strideIndex]);
+    for (arraySize = 8; arraySize <= 134217728; arraySize *= 2) {
+      printf("arraySize: %llu\n", arraySize);
+      for (repeat = 0; repeat < totalRepeat; repeat++) {
+        measureAccessTime(strides[strideIndex], arraySize);
+      }
+    }
+  }
+}
+
+/* Measure RAM Access Time END */
+
+int mainOld()
 {
   srand(time(NULL));
   // measureRAMAccessTime();
