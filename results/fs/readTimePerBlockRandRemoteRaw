@@ -11,6 +11,7 @@ Password:
 12964.787637 MB/s           0.000301   ms per block
 17766.407277 MB/s           0.000220   ms per block
 14733.182073 MB/s           0.000265   ms per block
+avg: 0.001331        std: 0.002999
 2MB
 0.561270   MB/s           6.959661   ms per block
 0.562435   MB/s           6.945243   ms per block
@@ -22,6 +23,7 @@ Password:
 0.562488   MB/s           6.944587   ms per block
 0.546165   MB/s           7.152141   ms per block
 0.568476   MB/s           6.871444   ms per block
+avg: 6.933578        std: 0.224852
 4MB
 0.577332   MB/s           6.766033   ms per block
 0.500297   MB/s           7.807860   ms per block
@@ -33,6 +35,7 @@ Password:
 0.590868   MB/s           6.611035   ms per block
 0.571671   MB/s           6.833039   ms per block
 0.580819   MB/s           6.725419   ms per block
+avg: 6.973725        std: 0.423196
 8MB
 0.567430   MB/s           6.884105   ms per block
 0.591469   MB/s           6.604324   ms per block
@@ -44,6 +47,7 @@ Password:
 0.573408   MB/s           6.812339   ms per block
 0.557197   MB/s           7.010543   ms per block
 0.578758   MB/s           6.749371   ms per block
+avg: 6.954936        std: 0.431505
 16MB
 0.540465   MB/s           7.227572   ms per block
 0.560267   MB/s           6.972120   ms per block
@@ -55,6 +59,7 @@ Password:
 0.533588   MB/s           7.320723   ms per block
 0.494341   MB/s           7.901934   ms per block
 0.491821   MB/s           7.942420   ms per block
+avg: 7.290784        std: 0.337009
 32MB
 0.537973   MB/s           7.261046   ms per block
 0.539694   MB/s           7.237899   ms per block
@@ -66,6 +71,7 @@ Password:
 0.529137   MB/s           7.382310   ms per block
 0.535908   MB/s           7.289027   ms per block
 0.501625   MB/s           7.787187   ms per block
+avg: 7.427788        std: 0.190876
 64MB
 12273.820105 MB/s           0.000318   ms per block
 9155.628591 MB/s           0.000427   ms per block
@@ -77,6 +83,7 @@ Password:
 13014.601671 MB/s           0.000300   ms per block
 13959.875827 MB/s           0.000280   ms per block
 11772.875479 MB/s           0.000332   ms per block
+avg: 0.000300        std: 0.000054
 128MB
 0.538547   MB/s           7.253317   ms per block
 ^C
