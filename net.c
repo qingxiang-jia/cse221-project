@@ -12,6 +12,9 @@
 #include <string.h>
 #include <arpa/inet.h>
 
+#include <errno.h>
+#include <string.h>
+
 /* Measure Round Trip Time BEGIN */
 
 void pong(int port, int payloadSize) // sizeof(char) == 1
@@ -73,7 +76,11 @@ void ping(char *serverAddress, int port, int payloadSize)
 
   inet_pton(AF_INET, serverAddress, &(servaddr.sin_addr));
 
-  connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  int connectionRet = connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  if (connectionRet == -1) {
+    printf("Connection failed! %s\n", strerror(errno));
+    exit(0);
+  }
 
   int i = 100;
   ssize_t sent;
@@ -106,11 +113,12 @@ int main1(int argc, char *argv[])
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    ping(argv[2], atoi(argv[2]), PAYLOAD_SIZE_1);
+    ping(argv[2], atoi(argv[3]), PAYLOAD_SIZE_1);
   }
   else
   {
     printf("net -s <port>\nnet -c <ip> <port>");
+    //      0    1 2       0    1 2    3
   }
   return 0;
 }
@@ -186,7 +194,11 @@ void client(char *serverAddress, int port, int payloadSize)
 
   inet_pton(AF_INET, serverAddress, &(servaddr.sin_addr));
 
-  connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  int connectionRet = connect(socketTCP, (struct sockaddr *)&servaddr, sizeof(servaddr));
+  if (connectionRet == -1) {
+    printf("Connection failed! %s\n", strerror(errno));
+    exit(0);
+  }
 
   int i = 10;
   ssize_t sent;
@@ -213,11 +225,12 @@ int main2(int argc, char *argv[])
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    client(argv[2], atoi(argv[2]), PAYLOAD_SIZE_2);
+    client(argv[2], atoi(argv[3]), PAYLOAD_SIZE_2);
   }
   else
   {
     printf("net -s <port>\nnet -c <ip> <port>");
+    //      0    1 2       0    1 2    3
   }
   return 0;
 }
@@ -319,7 +332,7 @@ int main(int argc, char *argv[])
   else if (argc == 4 && strcmp(argv[1], "-c") == 0)
   {
     // printf("role: %s\nport: %s\naddr: %s\n", "client", argv[2], argv[3]);
-    client1(argv[2], atoi(argv[2]), PAYLOAD_SIZE_3);
+    client1(argv[2], atoi(argv[3]), PAYLOAD_SIZE_3);
   }
   else
   {

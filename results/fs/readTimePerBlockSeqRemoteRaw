@@ -1,0 +1,90 @@
+Last login: Sun Jun  4 18:22:12 from 10.0.0.2
+Ziliangs-MBP:~ twincus$ cd Desktop/temp
+Ziliangs-MBP:temp twincus$ ls
+cse221-project
+Ziliangs-MBP:temp twincus$ cd cse221-project/
+Ziliangs-MBP:cse221-project twincus$ ls
+Makefile	fs.c	mem.c	results
+cpu.c	headers	net.c	tests
+fs	info	net.o
+Ziliangs-MBP:cse221-project twincus$ ./fs
+1MB
+Password:
+529.608281 MB/s           0.007376   ms per block
+11943.507211 MB/s           0.000327   ms per block
+10248.999441 MB/s           0.000381   ms per block
+13646.474433 MB/s           0.000286   ms per block
+7560.779214 MB/s           0.000517   ms per block
+7725.378254 MB/s           0.000506   ms per block
+16593.103906 MB/s           0.000235   ms per block
+7017.396125 MB/s           0.000557   ms per block
+10958.964159 MB/s           0.000356   ms per block
+10603.666748 MB/s           0.000368   ms per block
+2MB
+0.585150   MB/s           6.675636   ms per block
+0.593287   MB/s           6.584083   ms per block
+0.563654   MB/s           6.930232   ms per block
+0.587278   MB/s           6.651452   ms per block
+0.593429   MB/s           6.582507   ms per block
+0.602285   MB/s           6.485720   ms per block
+0.548344   MB/s           7.123718   ms per block
+0.550423   MB/s           7.096812   ms per block
+0.568126   MB/s           6.875679   ms per block
+0.576065   MB/s           6.780919   ms per block
+4MB
+0.597616   MB/s           6.536384   ms per block
+0.611054   MB/s           6.392648   ms per block
+0.598076   MB/s           6.531363   ms per block
+0.601827   MB/s           6.490657   ms per block
+0.560237   MB/s           6.972499   ms per block
+0.595562   MB/s           6.558936   ms per block
+0.562396   MB/s           6.945725   ms per block
+0.592061   MB/s           6.597717   ms per block
+0.579684   MB/s           6.738590   ms per block
+0.576270   MB/s           6.778508   ms per block
+8MB
+0.574188   MB/s           6.803088   ms per block
+0.593551   MB/s           6.581158   ms per block
+0.593386   MB/s           6.582983   ms per block
+0.572624   MB/s           6.821661   ms per block
+0.480352   MB/s           8.132065   ms per block
+0.575535   MB/s           6.787164   ms per block
+0.588630   MB/s           6.636176   ms per block
+0.586640   MB/s           6.658683   ms per block
+0.575608   MB/s           6.786307   ms per block
+0.575167   MB/s           6.791509   ms per block
+16MB
+0.598066   MB/s           6.531465   ms per block
+0.582781   MB/s           6.702774   ms per block
+0.574472   MB/s           6.799717   ms per block
+0.553376   MB/s           7.058944   ms per block
+0.546893   MB/s           7.142627   ms per block
+0.576704   MB/s           6.773400   ms per block
+0.573280   MB/s           6.813864   ms per block
+0.583775   MB/s           6.691358   ms per block
+0.565778   MB/s           6.904207   ms per block
+0.566579   MB/s           6.894446   ms per block
+32MB
+0.562019   MB/s           6.950389   ms per block
+0.591370   MB/s           6.605430   ms per block
+0.580127   MB/s           6.733445   ms per block
+0.585545   MB/s           6.671140   ms per block
+0.589982   MB/s           6.620960   ms per block
+0.594506   MB/s           6.570585   ms per block
+0.538598   MB/s           7.252625   ms per block
+0.582199   MB/s           6.709471   ms per block
+0.574533   MB/s           6.798999   ms per block
+0.588577   MB/s           6.636775   ms per block
+64MB
+11832.375543 MB/s           0.000330   ms per block
+16060.661117 MB/s           0.000243   ms per block
+13918.017657 MB/s           0.000281   ms per block
+11610.054198 MB/s           0.000336   ms per block
+13273.552571 MB/s           0.000294   ms per block
+13435.366545 MB/s           0.000291   ms per block
+13318.337717 MB/s           0.000293   ms per block
+12878.883159 MB/s           0.000303   ms per block
+14276.652754 MB/s           0.000274   ms per block
+15296.215394 MB/s           0.000255   ms per block
+128MB
+0.581676   MB/s           6.715511   ms per block

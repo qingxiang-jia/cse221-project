@@ -41,7 +41,8 @@
 #define SZ_2MB 2097152
 #define SZ_1MB 1048576
 #define SSD_BLOCK_SIZE 4096
-#define CYC_PER_SECOND 2.4e9
+// #define CYC_PER_SECOND 2.4e9
+#define CYC_PER_SECOND 2e9
 void measureFileCacheSize(uint64_t fileSize, char *path)
 {
   int largeFile = open(path, O_RDONLY);
@@ -210,7 +211,7 @@ void readFileNoCacheRand(uint64_t fileSize, char *path)
   free(buf);
 }
 
-int main2()
+int main()
 {
   // printf("1MB\n");
   // readFileNoCacheSeq(SZ_1MB, "/Users/lee/Documents/1m");
@@ -256,6 +257,52 @@ int main2()
   // readFileNoCacheRand(SZ_512MB, "/Users/lee/Documents/512m");
   // printf("1G\n");
   // readFileNoCacheRand(SZ_1G, "/Users/lee/Documents/1g");
+
+  // printf("1MB\n");
+  // readFileNoCacheSeq(SZ_1MB, "/Users/twincus/Desktop/mount/lee/Documents/1m");
+  // printf("2MB\n");
+  // readFileNoCacheSeq(SZ_2MB, "/Users/twincus/Desktop/mount/lee/Documents/2m");
+  // printf("4MB\n");
+  // readFileNoCacheSeq(SZ_4MB, "/Users/twincus/Desktop/mount/lee/Documents/4m");
+  // printf("8MB\n");
+  // readFileNoCacheSeq(SZ_8MB, "/Users/twincus/Desktop/mount/lee/Documents/8m");
+  // printf("16MB\n");
+  // readFileNoCacheSeq(SZ_16MB, "/Users/twincus/Desktop/mount/lee/Documents/16m");
+  // printf("32MB\n");
+  // readFileNoCacheSeq(SZ_32MB, "/Users/twincus/Desktop/mount/lee/Documents/32m");
+  // printf("64MB\n");
+  // readFileNoCacheSeq(SZ_64MB, "/Users/twincus/Desktop/mount/lee/Documents/64m");
+  // printf("128MB\n");
+  // readFileNoCacheSeq(SZ_128MB, "/Users/twincus/Desktop/mount/lee/Documents/128m");
+  // printf("256MB\n");
+  // readFileNoCacheSeq(SZ_256MB, "/Users/twincus/Desktop/mount/lee/Documents/256m");
+  // printf("512MB\n");
+  // readFileNoCacheSeq(SZ_512MB, "/Users/twincus/Desktop/mount/lee/Documents/512m");
+  // printf("1G\n");
+  // readFileNoCacheSeq(SZ_1G, "/Users/twincus/Desktop/mount/lee/Documents/1g");
+  printf("1MB\n");
+  readFileNoCacheRand(SZ_1MB, "/Users/twincus/Desktop/mount/lee/Documents/1m");
+  printf("2MB\n");
+  readFileNoCacheRand(SZ_2MB, "/Users/twincus/Desktop/mount/lee/Documents/2m");
+  printf("4MB\n");
+  readFileNoCacheRand(SZ_4MB, "/Users/twincus/Desktop/mount/lee/Documents/4m");
+  printf("8MB\n");
+  readFileNoCacheRand(SZ_8MB, "/Users/twincus/Desktop/mount/lee/Documents/8m");
+  printf("16MB\n");
+  readFileNoCacheRand(SZ_16MB, "/Users/twincus/Desktop/mount/lee/Documents/16m");
+  printf("32MB\n");
+  readFileNoCacheRand(SZ_32MB, "/Users/twincus/Desktop/mount/lee/Documents/32m");
+  printf("64MB\n");
+  readFileNoCacheRand(SZ_64MB, "/Users/twincus/Desktop/mount/lee/Documents/64m");
+  printf("128MB\n");
+  readFileNoCacheRand(SZ_128MB, "/Users/twincus/Desktop/mount/lee/Documents/128m");
+  // printf("256MB\n");
+  // readFileNoCacheRand(SZ_256MB, "/Users/twincus/Desktop/mount/lee/Documents/256m");
+  // printf("512MB\n");
+  // readFileNoCacheRand(SZ_512MB, "/Users/twincus/Desktop/mount/lee/Documents/512m");
+  // printf("1G\n");
+  // readFileNoCacheRand(SZ_1G, "/Users/twincus/Desktop/mount/lee/Documents/1g");
+
   return 0;
 }
 
@@ -323,7 +370,7 @@ void spawn(int numOfProcesses, char *pathTemplate) // pathTemplate: /Users/lee/D
   }
 }
 
-int main(int argc, char *argv[])
+int main4(int argc, char *argv[])
 {
   printf("\n\n");
   spawn(atoi(argv[1]), "/Users/lee/Documents/64m%d");

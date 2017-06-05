@@ -1,0 +1,83 @@
+Ziliangs-MBP:cse221-project twincus$ ./fs
+1MB
+Password:
+378.352057 MB/s           0.010324   ms per block
+10024.861657 MB/s           0.000390   ms per block
+11753.989010 MB/s           0.000332   ms per block
+9765.291225 MB/s           0.000400   ms per block
+8410.959480 MB/s           0.000464   ms per block
+13671.194110 MB/s           0.000286   ms per block
+12027.326085 MB/s           0.000325   ms per block
+12964.787637 MB/s           0.000301   ms per block
+17766.407277 MB/s           0.000220   ms per block
+14733.182073 MB/s           0.000265   ms per block
+2MB
+0.561270   MB/s           6.959661   ms per block
+0.562435   MB/s           6.945243   ms per block
+0.586175   MB/s           6.663960   ms per block
+0.580472   MB/s           6.729438   ms per block
+0.575249   MB/s           6.790536   ms per block
+0.522152   MB/s           7.481054   ms per block
+0.574642   MB/s           6.797711   ms per block
+0.562488   MB/s           6.944587   ms per block
+0.546165   MB/s           7.152141   ms per block
+0.568476   MB/s           6.871444   ms per block
+4MB
+0.577332   MB/s           6.766033   ms per block
+0.500297   MB/s           7.807860   ms per block
+0.571202   MB/s           6.838649   ms per block
+0.509373   MB/s           7.668737   ms per block
+0.540864   MB/s           7.222240   ms per block
+0.576307   MB/s           6.778067   ms per block
+0.602243   MB/s           6.486169   ms per block
+0.590868   MB/s           6.611035   ms per block
+0.571671   MB/s           6.833039   ms per block
+0.580819   MB/s           6.725419   ms per block
+8MB
+0.567430   MB/s           6.884105   ms per block
+0.591469   MB/s           6.604324   ms per block
+0.553440   MB/s           7.058126   ms per block
+0.477351   MB/s           8.183176   ms per block
+0.583307   MB/s           6.696734   ms per block
+0.568597   MB/s           6.869976   ms per block
+0.584710   MB/s           6.680661   ms per block
+0.573408   MB/s           6.812339   ms per block
+0.557197   MB/s           7.010543   ms per block
+0.578758   MB/s           6.749371   ms per block
+16MB
+0.540465   MB/s           7.227572   ms per block
+0.560267   MB/s           6.972120   ms per block
+0.536554   MB/s           7.280260   ms per block
+0.548559   MB/s           7.120931   ms per block
+0.564350   MB/s           6.921680   ms per block
+0.550828   MB/s           7.091592   ms per block
+0.547968   MB/s           7.128611   ms per block
+0.533588   MB/s           7.320723   ms per block
+0.494341   MB/s           7.901934   ms per block
+0.491821   MB/s           7.942420   ms per block
+32MB
+0.537973   MB/s           7.261046   ms per block
+0.539694   MB/s           7.237899   ms per block
+0.519629   MB/s           7.517376   ms per block
+0.502894   MB/s           7.767545   ms per block
+0.535322   MB/s           7.297011   ms per block
+0.532663   MB/s           7.333432   ms per block
+0.527512   MB/s           7.405042   ms per block
+0.529137   MB/s           7.382310   ms per block
+0.535908   MB/s           7.289027   ms per block
+0.501625   MB/s           7.787187   ms per block
+64MB
+12273.820105 MB/s           0.000318   ms per block
+9155.628591 MB/s           0.000427   ms per block
+17640.220806 MB/s           0.000221   ms per block
+12465.074662 MB/s           0.000313   ms per block
+13235.567983 MB/s           0.000295   ms per block
+14207.145284 MB/s           0.000275   ms per block
+16437.017139 MB/s           0.000238   ms per block
+13014.601671 MB/s           0.000300   ms per block
+13959.875827 MB/s           0.000280   ms per block
+11772.875479 MB/s           0.000332   ms per block
+128MB
+0.538547   MB/s           7.253317   ms per block
+^C
+Ziliangs-MBP:cse221-project twincus$
