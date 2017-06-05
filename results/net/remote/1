@@ -1,7 +1,3 @@
-Ziliangs-MBP:cse221-project twincus$ ./net -c 10.0.0.2 2221
-role: client
-port: 10.0.0.2
-addr: 2221
 11267709.000000 64
 6199281.000000  64
 10041747.000000 64
@@ -102,6 +98,3 @@ addr: 2221
 8138181.000000  64
 8276606.000000  64
 6648940.000000  64
-Ziliangs-MBP:cse221-project twincus$
-avg ping latency (ms): 3.9441674099999995
-              sd (ms): 1.0764303167059823
