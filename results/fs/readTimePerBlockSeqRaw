@@ -57,6 +57,7 @@ avg: 0.093021        std: 0.004089
 48.179556  MB/s           0.081077   ms per block
 47.808635  MB/s           0.081706   ms per block
 46.561199  MB/s           0.083895   ms per block
+avg: 0.085636        std: 0.015602
 32MB
 41.718476  MB/s           0.093634   ms per block
 36.436113  MB/s           0.107208   ms per block
@@ -68,7 +69,7 @@ avg: 0.093021        std: 0.004089
 29.256692  MB/s           0.133516   ms per block
 20.160635  MB/s           0.193756   ms per block
 35.146630  MB/s           0.111142   ms per block
-avg: 0.085636        std: 0.015602
+avg: 0.101289        std: 0.036512
 64MB
 52.652001  MB/s           0.074190   ms per block
 49.942006  MB/s           0.078216   ms per block

@@ -214,7 +214,8 @@ void client(char *serverAddress, int port, int payloadSize)
   close(socketTCP);
 }
 
-#define PAYLOAD_SIZE_2 67108864        // 64 MB, char is 1 byte
+// #define PAYLOAD_SIZE_2 67108864        // 64 MB, char is 1 byte
+#define PAYLOAD_SIZE_2 536870912        // 512 MB, char is 1 byte
 int main2(int argc, char *argv[])
 {
   if (argc == 3 && strcmp(argv[1], "-s") == 0)

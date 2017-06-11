@@ -25,6 +25,7 @@
 #define SZ_7G 7516192768
 #define SZ_6G 6442450944
 #define SZ_5G 5368709120
+#define SZ_4p5G 4831838208
 #define SZ_4G 4294967296
 #define SZ_3G 3221225472
 #define SZ_2G 2147483648
@@ -69,7 +70,7 @@ void measureFileCacheSize(uint64_t fileSize, char *path)
   ssize_t bytesRead;
   uint64_t offset = 1024 * SSD_BLOCK_SIZE;
   uint64_t readOccurrence = 0;
-  for (round = 0; round < 1; round++)
+  for (round = 0; round < 20; round++)
   {
     largeFile = open(path, O_RDONLY);
     start = 0, end = 0, hi = 0, lo = 0, hi1 = 0, lo1 = 0;
@@ -95,31 +96,35 @@ void measureFileCacheSize(uint64_t fileSize, char *path)
   free(buf);
 }
 
-int main1()
+int main()
 {
+
   system("sudo purge");
-  measureFileCacheSize(SZ_1G, "/Users/lee/Documents/1g");
+  measureFileCacheSize(SZ_4p5G, "/Users/lee/Documents/4p5g");
+
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_1G, "/Users/lee/Documents/1g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_2G, "/Users/lee/Documents/2g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_2G, "/Users/lee/Documents/2g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_3G, "/Users/lee/Documents/3g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_3G, "/Users/lee/Documents/3g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_4G, "/Users/lee/Documents/4g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_4G, "/Users/lee/Documents/4g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_5G, "/Users/lee/Documents/5g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_5G, "/Users/lee/Documents/5g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_6G, "/Users/lee/Documents/6g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_6G, "/Users/lee/Documents/6g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_7G, "/Users/lee/Documents/7g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_7G, "/Users/lee/Documents/7g");
   // printf("\n");
-  system("sudo purge");
-  measureFileCacheSize(SZ_8G, "/Users/lee/Documents/8g");
+  // system("sudo purge");
+  // measureFileCacheSize(SZ_8G, "/Users/lee/Documents/8g");
   // printf("\n");
   return 0;
 }
@@ -211,7 +216,7 @@ void readFileNoCacheRand(uint64_t fileSize, char *path)
   free(buf);
 }
 
-int main()
+int main2()
 {
   // printf("1MB\n");
   // readFileNoCacheSeq(SZ_1MB, "/Users/lee/Documents/1m");
